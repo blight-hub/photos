@@ -440,8 +440,8 @@
 <div class="shell">
   <aside>
     <div>
-      <div class="site-name">Your Name</div>
-      <div class="site-tagline">Photography</div>
+      <div class="site-name">João</div>
+      <div class="site-tagline">In Search Of</div>
     </div>
 
     <nav id="nav">
@@ -449,9 +449,9 @@
       <button class="active" data-panel="highlights">Highlights</button>
 
       <div class="nav-label">Albums</div>
-      <button data-panel="alb-landscape">Landscape</button>
+      <button data-panel="alb-landscape">Japan '23</button>
       <button data-panel="alb-cities">Cities</button>
-      <button data-panel="alb-people">People</button>
+      <button data-panel="alb-Unknown Canvases">Unknown Canvases</button>
 
       <div class="nav-label">Info</div>
       <button data-panel="about">About</button>
@@ -487,12 +487,12 @@
       <div class="alb-grid" id="grid-cities"></div>
     </div>
 
-    <div class="panel" id="panel-alb-people">
+    <div class="panel" id="panel-alb-Unknown Canvases">
       <div class="panel-head">
-        <div class="panel-title">People<span>Album · 2024–2025</span></div>
+        <div class="panel-title">Unknown Canvases<span>Album · 2024–2025</span></div>
         <div class="panel-count">15 photographs<br>35mm &amp; 50mm</div>
       </div>
-      <div class="alb-grid" id="grid-people"></div>
+      <div class="alb-grid" id="grid-Unknown Canvases"></div>
     </div>
 
     <div class="panel" id="panel-about">
@@ -573,7 +573,7 @@
   const albums = {
     landscape: Array.from({length:18}, (_,i) => `LS — ${String(i+1).padStart(2,'0')}`),
     cities:    Array.from({length:24}, (_,i) => `CT — ${String(i+1).padStart(2,'0')}`),
-    people:    Array.from({length:15}, (_,i) => `PP — ${String(i+1).padStart(2,'0')}`),
+    Unknown Canvases:    Array.from({length:15}, (_,i) => `PP — ${String(i+1).padStart(2,'0')}`),
   };
 
   Object.entries(albums).forEach(([key, titles]) => {
