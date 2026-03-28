@@ -37,6 +37,7 @@ body::after {
   background-size: 180px 180px;
 }
 
+/* ── LAYOUT ── */
 .shell {
   display: grid;
   grid-template-columns: var(--sidebar) 1fr;
@@ -44,151 +45,61 @@ body::after {
   overflow: hidden;
 }
 
+/* ── SIDEBAR ── */
 aside {
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
   padding: 36px 28px;
   border-right: 1px solid var(--border);
   background: var(--surface);
-  overflow-y: auto;
-  z-index: 10;
+  overflow-y: auto; z-index: 10;
 }
 
-.site-name {
-  font-family: 'IBM Plex Mono', monospace;
-  font-weight: 300;
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  color: var(--fg);
-  text-transform: uppercase;
-}
+.site-name { font-family: 'IBM Plex Mono', monospace; font-weight: 300; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--fg); text-transform: uppercase; }
+.site-tagline { font-size: 0.6rem; letter-spacing: 0.08em; color: var(--dim); margin-top: 4px; font-family: 'IBM Plex Mono', monospace; }
 
-.site-tagline {
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
-  color: var(--dim);
-  margin-top: 4px;
-  font-family: 'IBM Plex Mono', monospace;
-}
-
-nav {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2px;
-  margin: 40px 0;
-}
+nav { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 2px; margin: 40px 0; }
 
 .nav-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 16px 0 6px 0;
-  border-top: 1px solid var(--border);
-  margin-top: 8px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 16px 0 6px 0; border-top: 1px solid var(--border); margin-top: 8px;
 }
-
 .nav-label:first-child { border-top: none; margin-top: 0; padding-top: 0; }
 
 nav button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  font-family: 'IBM Plex Mono', monospace;
-  font-weight: 300;
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  color: var(--dim);
-  padding: 7px 0 7px 12px;
-  border-left: 1px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
-  text-transform: uppercase;
+  background: none; border: none; cursor: pointer; text-align: left;
+  font-family: 'IBM Plex Mono', monospace; font-weight: 300; font-size: 0.68rem;
+  letter-spacing: 0.08em; color: var(--dim); padding: 7px 0 7px 12px;
+  border-left: 1px solid transparent; transition: color 0.2s, border-color 0.2s; text-transform: uppercase;
 }
-
 nav button:hover { color: var(--mid); }
 nav button.active { color: var(--fg); border-left-color: var(--accent); }
 
-.sidebar-foot {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.52rem;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-  text-transform: uppercase;
-}
+.sidebar-foot { font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
 
+/* ── MOBILE TOPBAR ── */
 .topbar {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 20px;
-  align-items: center;
-  justify-content: space-between;
+  display: none; position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 14px 20px; align-items: center; justify-content: space-between;
 }
-
-.topbar-name {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--fg);
-}
-
-.burger {
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 4px;
-}
-
-.burger span {
-  display: block;
-  width: 22px;
-  height: 1px;
-  background: var(--dim);
-  transition: background 0.2s;
-}
-
+.topbar-name { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); }
+.burger { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 4px; }
+.burger span { display: block; width: 22px; height: 1px; background: var(--dim); transition: background 0.2s; }
 .burger:hover span { background: var(--fg); }
 
-.drawer {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 99;
-  background: rgba(0,0,0,0.7);
-}
-
+/* ── MOBILE DRAWER ── */
+.drawer { display: none; position: fixed; inset: 0; z-index: 99; background: rgba(0,0,0,0.7); }
 .drawer.open { display: block; }
-
 .drawer-inner {
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 240px;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  padding: 60px 28px 36px;
-  display: flex;
-  flex-direction: column;
+  position: absolute; top: 0; left: 0; bottom: 0; width: 240px;
+  background: var(--surface); border-right: 1px solid var(--border);
+  padding: 60px 28px 36px; display: flex; flex-direction: column;
 }
-
 .drawer-inner nav { margin: 24px 0; justify-content: flex-start; }
 
-main {
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: var(--bg);
-}
-
+/* ── MAIN ── */
+main { overflow-y: auto; overflow-x: hidden; background: var(--bg); }
 main::-webkit-scrollbar { width: 3px; }
 main::-webkit-scrollbar-track { background: transparent; }
 main::-webkit-scrollbar-thumb { background: var(--border); }
@@ -196,60 +107,46 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
 .panel { display: none; }
 .panel.active { display: block; animation: reveal 0.4s ease forwards; }
 
-@keyframes reveal {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+@keyframes reveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.panel-head {
-  padding: 48px 56px 36px;
+/* ── PANEL HEADER ── */
+.panel-head { padding: 48px 56px 36px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-end; justify-content: space-between; }
+.panel-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg); }
+.panel-title span { display: block; font-size: 0.52rem; color: var(--dim); letter-spacing: 0.2em; margin-top: 6px; font-weight: 300; }
+.panel-count { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 0.16em; color: var(--muted); text-align: right; line-height: 2; }
+
+/* ── LATEST STRIP ── */
+.latest-strip {
+  padding: 32px 56px;
   border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
 }
-
-.panel-title {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.7rem;
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--fg);
+.latest-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem;
+  letter-spacing: 0.26em; text-transform: uppercase; color: var(--dim);
+  margin-bottom: 16px;
 }
-
-.panel-title span {
-  display: block;
-  font-size: 0.52rem;
-  color: var(--dim);
-  letter-spacing: 0.2em;
-  margin-top: 6px;
-  font-weight: 300;
+.latest-row {
+  display: flex; gap: 3px;
 }
-
-.panel-count {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.16em;
-  color: var(--muted);
-  text-align: right;
-  line-height: 2;
+.latest-cell {
+  flex: 1; aspect-ratio: 3/2; overflow: hidden; cursor: pointer;
+  position: relative; background: var(--surface);
+  transition: flex 0.4s ease;
 }
-
-.hl-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 2px;
-  padding: 2px;
+.latest-cell:hover { flex: 1.6; }
+.latest-cell img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: filter 0.4s;
+  filter: grayscale(20%) brightness(0.8);
 }
+.latest-cell:hover img { filter: grayscale(0%) brightness(1); }
+.latest-cell .hl-overlay { background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%); }
+.latest-cell:hover .hl-overlay { opacity: 1; }
 
-.hl-cell {
-  overflow: hidden;
-  cursor: pointer;
-  position: relative;
-  background: var(--surface);
-}
+/* ── HIGHLIGHTS GRID ── */
+.hl-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; padding: 2px; }
 
+.hl-cell { overflow: hidden; cursor: pointer; position: relative; background: var(--surface); }
 .hl-cell:nth-child(1) { grid-column: 1/8;  aspect-ratio: 16/9; }
 .hl-cell:nth-child(2) { grid-column: 8/13; aspect-ratio: 4/5; }
 .hl-cell:nth-child(3) { grid-column: 1/5;  aspect-ratio: 4/5; }
@@ -260,198 +157,215 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
 .hl-cell:nth-child(8) { grid-column: 9/13; aspect-ratio: 3/2; }
 
 .hl-cell img, .alb-cell img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  width: 100%; height: 100%; object-fit: cover; display: block;
   transition: transform 0.8s cubic-bezier(.25,.46,.45,.94), filter 0.5s;
   filter: grayscale(15%) brightness(0.85);
 }
-
 .hl-cell:hover img { transform: scale(1.05); filter: grayscale(0%) brightness(1); }
 .alb-cell:hover img { transform: scale(1.05); filter: grayscale(0%) brightness(1); }
 
+/* ── SCROLL REVEAL ── */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── OVERLAYS ── */
 .hl-overlay, .alb-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%);
-  opacity: 0;
-  transition: opacity 0.35s;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 14px 16px 12px;
-  gap: 3px;
+  opacity: 0; transition: opacity 0.35s;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 14px 16px 12px; gap: 3px;
 }
-
 .hl-cell:hover .hl-overlay,
 .alb-cell:hover .alb-overlay { opacity: 1; }
 
-.meta-location {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(232,232,232,0.95);
-  line-height: 1;
-}
-
+.meta-location { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(232,232,232,0.95); line-height: 1; }
 .meta-row { display: flex; gap: 12px; align-items: center; }
+.meta-year { font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.14em; color: rgba(200,255,0,0.85); }
+.meta-camera { font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.1em; color: rgba(180,180,180,0.6); }
 
-.meta-year {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5rem;
-  letter-spacing: 0.14em;
-  color: rgba(200,255,0,0.85);
-}
+.ph { width: 100%; height: 100%; min-height: 120px; display: flex; align-items: center; justify-content: center; }
 
-.meta-camera {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.5rem;
-  letter-spacing: 0.1em;
-  color: rgba(180,180,180,0.6);
-}
+/* ── ALBUM GRID ── */
+.alb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; }
+.alb-cell { aspect-ratio: 3/2; overflow: hidden; cursor: pointer; position: relative; background: var(--surface); }
 
-.ph {
-  width: 100%;
-  height: 100%;
-  min-height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+/* ── VISUAL STORIES ── */
+.story-list { padding: 0; }
 
-.alb-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  padding: 2px;
-}
-
-.alb-cell {
-  aspect-ratio: 3/2;
-  overflow: hidden;
+.story-card {
+  display: flex; align-items: stretch;
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
-  position: relative;
+  transition: background 0.2s;
+  min-height: 160px;
+}
+.story-card:hover { background: rgba(255,255,255,0.02); }
+.story-card:first-child { border-top: 1px solid var(--border); }
+
+.story-thumb {
+  width: 240px; flex-shrink: 0;
+  overflow: hidden; position: relative;
   background: var(--surface);
 }
+.story-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(20%) brightness(0.8); transition: filter 0.4s; }
+.story-card:hover .story-thumb img { filter: grayscale(0%) brightness(1); }
 
-.about-wrap {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
+.story-info {
+  padding: 36px 48px;
+  display: flex; flex-direction: column; justify-content: center; gap: 12px;
 }
 
-.about-img {
-  background: #0f0f0f;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;
-  border-right: 1px solid var(--border);
+.story-title {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+  font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg);
 }
 
-.about-text {
-  padding: 80px 64px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.story-desc {
+  font-size: 0.76rem; line-height: 1.9; color: var(--mid);
+  font-style: italic; max-width: 480px;
 }
 
-.about-ttl {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 32px;
+.story-meta {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim);
+  display: flex; gap: 16px;
 }
 
-.about-body {
-  font-size: 0.78rem;
-  line-height: 2;
-  color: var(--mid);
-  max-width: 380px;
-  font-style: italic;
+/* ── VISUAL STORY READER ── */
+.story-reader { display: none; }
+.story-reader.active { display: block; }
+
+.story-reader-back {
+  padding: 28px 56px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 16px;
 }
 
-.about-specs {
-  margin-top: 48px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.56rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  line-height: 2.6;
-  border-top: 1px solid var(--border);
-  padding-top: 32px;
+.back-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--dim); transition: color 0.2s; padding: 0;
+}
+.back-btn:hover { color: var(--accent); }
+
+.story-reader-title {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg);
 }
 
+.story-body { max-width: 680px; margin: 0 auto; padding: 64px 32px 100px; }
+
+.story-body .s-img {
+  width: 100%; margin: 48px 0;
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.story-body .s-img.visible { opacity: 1; transform: translateY(0); }
+
+.story-body .s-img img { width: 100%; display: block; }
+
+.story-body .s-img.full { max-width: none; margin-left: calc(-1 * (50vw - 340px)); width: 100vw; }
+
+.story-body .s-text {
+  font-size: 0.82rem; line-height: 2.1; color: var(--mid);
+  font-style: italic; margin: 32px 0;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s;
+}
+.story-body .s-text.visible { opacity: 1; transform: translateY(0); }
+
+.story-body .s-location {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim);
+  margin: -24px 0 32px;
+  opacity: 0; transition: opacity 0.5s ease 0.2s;
+}
+.story-body .s-location.visible { opacity: 1; }
+
+/* ── ABOUT ── */
+.about-wrap { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+.about-img { background: #0f0f0f; display: flex; align-items: center; justify-content: center; min-height: 300px; border-right: 1px solid var(--border); }
+.about-text { padding: 80px 64px; display: flex; flex-direction: column; justify-content: center; }
+.about-ttl { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 32px; }
+.about-body { font-size: 0.78rem; line-height: 2; color: var(--mid); max-width: 380px; font-style: italic; }
+.about-specs { margin-top: 48px; font-family: 'IBM Plex Mono', monospace; font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); line-height: 2.6; border-top: 1px solid var(--border); padding-top: 32px; }
 .about-specs b { color: var(--dim); font-weight: 400; }
 
-#lightbox {
-  position: fixed; inset: 0;
-  background: rgba(8,8,8,0.97);
-  z-index: 1000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  cursor: zoom-out;
+.print-enquiry {
+  margin-top: 32px;
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; transition: border-color 0.2s, background 0.2s;
 }
+.print-enquiry:hover { border-color: var(--accent); background: rgba(200,255,0,0.03); }
 
+.print-enquiry-text { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); transition: color 0.2s; }
+.print-enquiry:hover .print-enquiry-text { color: var(--accent); }
+.print-enquiry-arrow { font-size: 0.9rem; color: var(--muted); transition: color 0.2s, transform 0.2s; display: inline-block; }
+.print-enquiry:hover .print-enquiry-arrow { color: var(--accent); transform: translate(3px,-3px); }
+
+/* ── LIGHTBOX ── */
+#lightbox {
+  position: fixed; inset: 0; background: rgba(8,8,8,0.97);
+  z-index: 1000; display: none;
+  align-items: center; justify-content: center; flex-direction: column;
+}
 #lightbox.open { display: flex; animation: reveal 0.25s ease; }
 
-#lightbox img {
-  max-width: 88vw;
-  max-height: 84vh;
-  object-fit: contain;
-  cursor: default;
-}
+#lb-img-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
 
-#lb-meta {
+#lightbox img { max-width: 82vw; max-height: 80vh; object-fit: contain; cursor: default; display: none; }
+
+/* lightbox arrows */
+.lb-arrow {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace; font-size: 1.2rem;
+  color: var(--dim); padding: 20px; transition: color 0.2s;
+  z-index: 1001; user-select: none;
+}
+.lb-arrow:hover { color: var(--fg); }
+.lb-arrow.prev { left: 16px; }
+.lb-arrow.next { right: 16px; }
+.lb-arrow.hidden { opacity: 0; pointer-events: none; }
+
+#lb-bottom {
   margin-top: 18px;
-  display: flex;
+  display: flex; align-items: baseline;
   gap: 20px;
-  align-items: baseline;
 }
 
-#lb-location {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.62rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--mid);
+#lb-location { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); }
+#lb-year { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; color: var(--accent); }
+#lb-camera { font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem; letter-spacing: 0.1em; color: var(--muted); }
+
+#lb-counter {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem;
+  letter-spacing: 0.14em; color: var(--muted); margin-left: auto;
 }
 
-#lb-year {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.14em;
-  color: var(--accent);
-}
-
-#lb-camera {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.52rem;
-  letter-spacing: 0.1em;
-  color: var(--muted);
+#lb-hint {
+  margin-top: 10px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.48rem;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+  opacity: 0.6;
 }
 
 #lb-close {
-  position: fixed;
-  top: 28px; right: 36px;
-  background: none; border: none;
-  color: var(--dim);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: color 0.2s;
+  position: fixed; top: 28px; right: 36px;
+  background: none; border: none; color: var(--dim);
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; transition: color 0.2s;
 }
-
 #lb-close:hover { color: var(--accent); }
 
+/* ── MOBILE ── */
 @media (max-width: 768px) {
   .shell { grid-template-columns: 1fr; }
   aside.desktop-sidebar { display: none; }
@@ -460,6 +374,7 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
 
   .panel-head { padding: 28px 20px 20px; flex-direction: column; align-items: flex-start; gap: 8px; }
   .panel-count { text-align: left; }
+  .latest-strip { padding: 24px 16px; }
 
   .hl-grid { grid-template-columns: repeat(2, 1fr); }
   .hl-cell:nth-child(1), .hl-cell:nth-child(2), .hl-cell:nth-child(3),
@@ -472,17 +387,31 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
   .about-img { min-height: 220px; border-right: none; border-bottom: 1px solid var(--border); }
   .about-text { padding: 40px 24px; }
   .about-body { max-width: 100%; }
+
+  .story-card { flex-direction: column; }
+  .story-thumb { width: 100%; height: 180px; }
+  .story-info { padding: 24px 20px; }
+
+  .story-reader-back { padding: 20px 20px; }
+  .story-body { padding: 40px 20px 80px; }
+  .story-body .s-img.full { margin-left: -20px; width: calc(100% + 40px); }
+
+  .lb-arrow { font-size: 1rem; padding: 12px; }
+  #lightbox img { max-width: 94vw; max-height: 72vh; }
 }
 
 @media (max-width: 420px) {
   .hl-grid { grid-template-columns: 1fr; }
   .alb-grid { grid-template-columns: 1fr; }
   .hl-cell:nth-child(n) { aspect-ratio: 3/2; }
+  .latest-row { flex-direction: column; }
+  .latest-cell { aspect-ratio: 16/9; }
 }
 </style>
 </head>
 <body>
 
+<!-- MOBILE TOPBAR -->
 <div class="topbar">
   <div class="topbar-name">Joao Ferreira</div>
   <button class="burger" onclick="toggleDrawer()" aria-label="Menu">
@@ -490,6 +419,7 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
   </button>
 </div>
 
+<!-- MOBILE DRAWER -->
 <div class="drawer" id="drawer" onclick="closeDrawer(event)">
   <div class="drawer-inner">
     <div>
@@ -503,6 +433,8 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
       <button data-panel="alb-landscape">Landscape</button>
       <button data-panel="alb-cities">Cities</button>
       <button data-panel="alb-people">People</button>
+      <div class="nav-label">Stories</div>
+      <button data-panel="stories">Visual Stories</button>
       <div class="nav-label">Info</div>
       <button data-panel="about">About</button>
     </nav>
@@ -511,6 +443,7 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
 
 <div class="shell">
 
+  <!-- DESKTOP SIDEBAR -->
   <aside class="desktop-sidebar">
     <div>
       <div class="site-name">Joao Ferreira</div>
@@ -523,6 +456,8 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
       <button data-panel="alb-landscape">Landscape</button>
       <button data-panel="alb-cities">Cities</button>
       <button data-panel="alb-people">People</button>
+      <div class="nav-label">Stories</div>
+      <button data-panel="stories">Visual Stories</button>
       <div class="nav-label">Info</div>
       <button data-panel="about">About</button>
     </nav>
@@ -531,14 +466,21 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
 
   <main id="main">
 
+    <!-- HIGHLIGHTS -->
     <div class="panel active" id="panel-highlights">
       <div class="panel-head">
         <div class="panel-title">Highlights<span>Selected works</span></div>
         <div class="panel-count" id="hl-count"></div>
       </div>
+      <!-- LATEST STRIP -->
+      <div class="latest-strip" id="latest-strip" style="display:none">
+        <div class="latest-label">Latest</div>
+        <div class="latest-row" id="latest-row"></div>
+      </div>
       <div class="hl-grid" id="hl-grid"></div>
     </div>
 
+    <!-- ALBUMS -->
     <div class="panel" id="panel-alb-landscape">
       <div class="panel-head">
         <div class="panel-title">Landscape<span>Album</span></div>
@@ -563,6 +505,26 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
       <div class="alb-grid" id="grid-people"></div>
     </div>
 
+    <!-- VISUAL STORIES -->
+    <div class="panel" id="panel-stories">
+      <div class="panel-head">
+        <div class="panel-title">Visual Stories<span>Long-form photo essays</span></div>
+      </div>
+
+      <!-- Story index list -->
+      <div class="story-list" id="story-list"></div>
+
+      <!-- Story reader (shown when a story is opened) -->
+      <div class="story-reader" id="story-reader">
+        <div class="story-reader-back">
+          <button class="back-btn" onclick="closeStory()">← Back</button>
+          <span class="story-reader-title" id="reader-title"></span>
+        </div>
+        <div class="story-body" id="reader-body"></div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
     <div class="panel" id="panel-about">
       <div class="about-wrap">
         <div class="about-img">
@@ -580,7 +542,11 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
           <div class="about-specs">
             <b>Based in</b> &nbsp; Paris<br>
             <b>Shooting since</b> &nbsp; 2023<br>
-            <b>Contact</b> &nbsp; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d4bebbb5bba4b1b0a6bbb2b1a6a6b1bda6b5e5e4e794b3b9b5bdb8fab7bbb9">[email&#160;protected]</a>
+            <b>Contact</b> &nbsp; joaopedroferreira103@gmail.com
+          </div>
+          <div class="print-enquiry" onclick="window.location='mailto:joaopedroferreira103@gmail.com?subject=Print%20Enquiry&body=Hi%20Joao%2C%20I%20am%20interested%20in%20a%20print%20of...'">
+            <span class="print-enquiry-text">Prints available on enquiry</span>
+            <span class="print-enquiry-arrow">↗</span>
           </div>
         </div>
       </div>
@@ -589,44 +555,74 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
   </main>
 </div>
 
+<!-- LIGHTBOX -->
 <div id="lightbox" onclick="if(event.target===this)closeLb()">
   <button id="lb-close" onclick="closeLb()">ESC / Close</button>
-  <img id="lb-img" src="" alt="" style="display:none">
-  <div id="lb-meta">
+  <button class="lb-arrow prev" id="lb-prev" onclick="lbNav(-1)">&#8592;</button>
+  <button class="lb-arrow next" id="lb-next" onclick="lbNav(1)">&#8594;</button>
+  <div id="lb-img-wrap">
+    <img id="lb-img" src="" alt="">
+  </div>
+  <div id="lb-bottom">
     <span id="lb-location"></span>
     <span id="lb-year"></span>
     <span id="lb-camera"></span>
+    <span id="lb-counter"></span>
   </div>
+  <div id="lb-hint">&#8592; &#8594; navigate &nbsp;&nbsp; ESC close</div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-
+<script>
 // ============================================================
-//  ADD YOUR PHOTOS HERE
-//  src      = path to image file (required)
-//  location = where it was taken, e.g. 'Paris' (optional)
+//  YOUR PHOTOS
+//  src      = image path (required)
+//  location = e.g. 'Paris' (optional)
 //  year     = e.g. '2026' (optional)
-//  camera   = e.g. '35mm' or 'Ricoh GR' (optional)
+//  camera   = e.g. 'Ricoh GR' (optional)
+//  latest   = true  ->  appears in the Latest strip on Highlights
 // ============================================================
 
 var hlPhotos = [
-  { src: 'images/highlights/eiffel_tower_sunset', location: 'Paris', year: '2026', camera: '' }
+  { src: 'images/highlights/eiffel_tower_sunset', location: 'Paris', year: '2026', camera: '', latest: true }
 ];
 
 var albums = {
   landscape: [
-    // { src: 'images/landscape/photo.jpg', location: 'Normandy', year: '2026', camera: '' }
+    // { src: 'images/landscape/photo.jpg', location: 'Normandy', year: '2026', camera: '', latest: false }
   ],
   cities: [
-    // { src: 'images/cities/photo.jpg', location: 'Paris', year: '2026', camera: 'Ricoh GR' }
+    // { src: 'images/cities/photo.jpg', location: 'Paris', year: '2026', camera: 'Ricoh GR', latest: true }
   ],
   people: [
-    // { src: 'images/people/photo.jpg', location: '', year: '2026', camera: '' }
+    // { src: 'images/people/photo.jpg', location: '', year: '2026', camera: '', latest: false }
   ]
 };
 
 // ============================================================
-//  ENGINE - do not edit below
+//  YOUR VISUAL STORIES
+//  Each story has a title, cover image, description, location,
+//  year, and a sequence of blocks (image or text).
+// ============================================================
+
+var stories = [
+  // {
+  //   title: 'Paris, Always',
+  //   cover: 'images/stories/paris-cover.jpg',
+  //   desc: 'Three days, one arrondissement, a thousand small moments.',
+  //   location: 'Paris, France',
+  //   year: '2026',
+  //   blocks: [
+  //     { type: 'text', content: 'It started raining on the second morning...' },
+  //     { type: 'image', src: 'images/stories/paris-01.jpg', location: 'Rue de Rivoli', full: false },
+  //     { type: 'location', content: 'Marais, 09:14' },
+  //     { type: 'text', content: 'The light through the market awning...' },
+  //     { type: 'image', src: 'images/stories/paris-02.jpg', location: '', full: true },
+  //   ]
+  // }
+];
+
+// ============================================================
+//  ENGINE
 // ============================================================
 
 var bgs = ['#141414','#161616','#131313','#181818','#111111','#151515','#121212','#171717'];
@@ -634,9 +630,7 @@ var bgs = ['#141414','#161616','#131313','#181818','#111111','#151515','#121212'
 function phCell(bg) {
   return '<div class="ph" style="background:' + bg + '">'
     + '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="0.8">'
-    + '<rect x="3" y="3" width="18" height="18" rx="1"/>'
-    + '<circle cx="8.5" cy="8.5" r="1.5"/>'
-    + '<path d="M21 15l-5-5L5 21"/>'
+    + '<rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>'
     + '</svg></div>';
 }
 
@@ -648,25 +642,83 @@ function metaOverlay(photo, cls) {
   return '<div class="' + cls + '">' + loc + row + '</div>';
 }
 
+// Lightbox state
+var lbPhotos = [];
+var lbIndex  = 0;
+
+function openLb(photos, idx) {
+  lbPhotos = photos;
+  lbIndex  = idx;
+  renderLb();
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function renderLb() {
+  var photo = lbPhotos[lbIndex];
+  var img = document.getElementById('lb-img');
+  img.src = photo.src;
+  img.style.display = 'block';
+  document.getElementById('lb-location').textContent = photo.location || '';
+  document.getElementById('lb-year').textContent     = photo.year     || '';
+  document.getElementById('lb-camera').textContent   = photo.camera   || '';
+  document.getElementById('lb-counter').textContent  = lbPhotos.length > 1 ? (lbIndex + 1) + ' / ' + lbPhotos.length : '';
+  document.getElementById('lb-prev').classList.toggle('hidden', lbIndex === 0);
+  document.getElementById('lb-next').classList.toggle('hidden', lbIndex === lbPhotos.length - 1);
+  document.getElementById('lb-hint').style.display = lbPhotos.length > 1 ? 'block' : 'none';
+}
+
+function lbNav(dir) {
+  var next = lbIndex + dir;
+  if (next >= 0 && next < lbPhotos.length) { lbIndex = next; renderLb(); }
+}
+
+function closeLb() { document.getElementById('lightbox').classList.remove('open'); }
+
+document.addEventListener('keydown', function(e) {
+  var lb = document.getElementById('lightbox');
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape')      closeLb();
+  if (e.key === 'ArrowRight')  lbNav(1);
+  if (e.key === 'ArrowLeft')   lbNav(-1);
+});
+
 // Build highlights
 var hlGrid  = document.getElementById('hl-grid');
 var hlCount = document.getElementById('hl-count');
-var hlItems = hlPhotos.length > 0 ? hlPhotos : (function() {
-  var arr = []; for (var k = 0; k < 8; k++) arr.push({src:null}); return arr;
-}());
+var hlItems = hlPhotos.length > 0 ? hlPhotos : (function(){ var a=[]; for(var i=0;i<8;i++) a.push({src:null}); return a; }());
 hlCount.textContent = hlPhotos.length + (hlPhotos.length !== 1 ? ' frames' : ' frame');
 
+var hlReal = hlPhotos.filter(function(p){ return p.src; });
 for (var i = 0; i < hlItems.length; i++) {
   (function(photo, idx) {
     var cell = document.createElement('div');
-    cell.className = 'hl-cell';
-    var img = photo.src
-      ? '<img src="' + photo.src + '" alt="' + (photo.location || '') + '" loading="lazy">'
+    cell.className = 'hl-cell scroll-reveal';
+    var imgHtml = photo.src
+      ? '<img src="' + photo.src + '" alt="' + (photo.location||'') + '" loading="lazy">'
       : phCell(bgs[idx % bgs.length]);
-    cell.innerHTML = img + metaOverlay(photo, 'hl-overlay');
-    if (photo.src) cell.onclick = function() { openLb(photo); };
+    cell.innerHTML = imgHtml + metaOverlay(photo, 'hl-overlay');
+    if (photo.src) cell.onclick = function() { openLb(hlReal, hlReal.indexOf(photo)); };
     hlGrid.appendChild(cell);
   }(hlItems[i], i));
+}
+
+// Latest strip
+var allPhotos = [];
+hlPhotos.forEach(function(p){ if(p.src) allPhotos.push(p); });
+Object.keys(albums).forEach(function(key){ albums[key].forEach(function(p){ if(p.src) allPhotos.push(p); }); });
+
+var latestPhotos = allPhotos.filter(function(p){ return p.latest; }).slice(0, 5);
+if (latestPhotos.length > 0) {
+  document.getElementById('latest-strip').style.display = 'block';
+  var latestRow = document.getElementById('latest-row');
+  latestPhotos.forEach(function(photo) {
+    var cell = document.createElement('div');
+    cell.className = 'latest-cell';
+    cell.innerHTML = '<img src="' + photo.src + '" alt="' + (photo.location||'') + '" loading="lazy">'
+      + metaOverlay(photo, 'hl-overlay');
+    cell.onclick = function() { openLb(latestPhotos, latestPhotos.indexOf(photo)); };
+    latestRow.appendChild(cell);
+  });
 }
 
 // Build albums
@@ -677,25 +729,101 @@ for (var a = 0; a < albumKeys.length; a++) {
     var grid    = document.getElementById('grid-' + key);
     var countEl = document.getElementById('count-' + key);
     countEl.textContent = photos.length + (photos.length !== 1 ? ' photographs' : ' photograph');
-
-    var items = photos.length > 0 ? photos : (function() {
-      var arr = []; for (var k = 0; k < 6; k++) arr.push({src:null}); return arr;
-    }());
-
-    for (var j = 0; j < items.length; j++) {
-      (function(photo, idx) {
-        var cell = document.createElement('div');
-        cell.className = 'alb-cell';
-        var img = photo.src
-          ? '<img src="' + photo.src + '" alt="' + (photo.location || '') + '" loading="lazy">'
-          : phCell(bgs[idx % bgs.length]);
-        cell.innerHTML = img + metaOverlay(photo, 'alb-overlay');
-        if (photo.src) cell.onclick = function() { openLb(photo); };
-        grid.appendChild(cell);
-      }(items[j], j));
-    }
+    var realPhotos = photos.filter(function(p){ return p.src; });
+    var items = photos.length > 0 ? photos : (function(){ var a=[]; for(var i=0;i<6;i++) a.push({src:null}); return a; }());
+    items.forEach(function(photo, idx) {
+      var cell = document.createElement('div');
+      cell.className = 'alb-cell scroll-reveal';
+      var imgHtml = photo.src
+        ? '<img src="' + photo.src + '" alt="' + (photo.location||'') + '" loading="lazy">'
+        : phCell(bgs[idx % bgs.length]);
+      cell.innerHTML = imgHtml + metaOverlay(photo, 'alb-overlay');
+      if (photo.src) cell.onclick = function() { openLb(realPhotos, realPhotos.indexOf(photo)); };
+      grid.appendChild(cell);
+    });
   }(albumKeys[a]));
 }
+
+// Build story list
+var storyList = document.getElementById('story-list');
+if (stories.length === 0) {
+  storyList.innerHTML = '<div style="padding:80px 56px;font-family:IBM Plex Mono,monospace;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);">No stories yet — add your first one in the HTML.</div>';
+} else {
+  stories.forEach(function(story, si) {
+    var card = document.createElement('div');
+    card.className = 'story-card';
+    var thumb = story.cover
+      ? '<img src="' + story.cover + '" alt="' + story.title + '">'
+      : '<div style="width:100%;height:100%;background:#141414;display:flex;align-items:center;justify-content:center;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>';
+    card.innerHTML = '<div class="story-thumb">' + thumb + '</div>'
+      + '<div class="story-info">'
+      + '<div class="story-title">' + story.title + '</div>'
+      + '<div class="story-desc">' + (story.desc || '') + '</div>'
+      + '<div class="story-meta"><span>' + (story.location||'') + '</span><span>' + (story.year||'') + '</span></div>'
+      + '</div>';
+    card.onclick = function() { openStory(si); };
+    storyList.appendChild(card);
+  });
+}
+
+function openStory(si) {
+  var story = stories[si];
+  document.getElementById('story-list').style.display = 'none';
+  var reader = document.getElementById('story-reader');
+  reader.classList.add('active');
+  document.getElementById('reader-title').textContent = story.title;
+  var body = document.getElementById('reader-body');
+  body.innerHTML = '';
+
+  story.blocks.forEach(function(block) {
+    var el;
+    if (block.type === 'image') {
+      el = document.createElement('div');
+      el.className = 's-img scroll-reveal' + (block.full ? ' full' : '');
+      el.innerHTML = '<img src="' + block.src + '" alt="' + (block.location||'') + '" loading="lazy">';
+      body.appendChild(el);
+    } else if (block.type === 'text') {
+      el = document.createElement('p');
+      el.className = 's-text scroll-reveal';
+      el.textContent = block.content;
+      body.appendChild(el);
+    } else if (block.type === 'location') {
+      el = document.createElement('div');
+      el.className = 's-location scroll-reveal';
+      el.textContent = block.content;
+      body.appendChild(el);
+    }
+  });
+
+  document.getElementById('main').scrollTo(0, 0);
+  setTimeout(initScrollReveal, 100);
+}
+
+function closeStory() {
+  document.getElementById('story-list').style.display = 'block';
+  document.getElementById('story-reader').classList.remove('active');
+  document.getElementById('reader-body').innerHTML = '';
+}
+
+// Scroll reveal observer
+function initScrollReveal() {
+  var els = document.querySelectorAll('.scroll-reveal:not(.visible)');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function(el){ el.classList.add('visible'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function(el){ obs.observe(el); });
+}
+
+initScrollReveal();
 
 // Nav
 function switchPanel(panelKey) {
@@ -706,7 +834,11 @@ function switchPanel(panelKey) {
   var panels = document.querySelectorAll('.panel');
   for (var j = 0; j < panels.length; j++) panels[j].classList.remove('active');
   var panel = document.getElementById('panel-' + panelKey);
-  if (panel) { panel.classList.add('active'); document.getElementById('main').scrollTo(0, 0); }
+  if (panel) {
+    panel.classList.add('active');
+    document.getElementById('main').scrollTo(0, 0);
+    setTimeout(initScrollReveal, 100);
+  }
 }
 
 function attachNav(navId) {
@@ -715,6 +847,8 @@ function attachNav(navId) {
   nav.addEventListener('click', function(e) {
     var btn = e.target.closest('button[data-panel]');
     if (!btn) return;
+    // reset story reader if leaving stories panel
+    closeStory();
     switchPanel(btn.getAttribute('data-panel'));
     closeDrawerAll();
   });
@@ -727,13 +861,6 @@ attachNav('nav-mobile');
 function toggleDrawer()   { document.getElementById('drawer').classList.toggle('open'); }
 function closeDrawerAll() { document.getElementById('drawer').classList.remove('open'); }
 function closeDrawer(e)   { if (e.target === document.getElementById('drawer')) closeDrawerAll(); }
-
-// Lightbox
-function openLb(photo) {
-  var img = document.getElementById('lb-img');
-  img.src = photo.src;
-  img.style.display = 'block';
-  document.getElementById('lb-location').textContent = photo.location || '';
-  document.getElementById('lb-year').textContent     = photo.year     || '';
-  document.getElementById('lb-camera').textContent   = photo.camera   || '';
-  document.getElementById(
+</script>
+</body>
+</html>
