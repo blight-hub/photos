@@ -918,4 +918,9 @@ attachNav('nav-desktop');
 attachNav('nav-mobile');
 
 // Drawer
-function toggleDrawer()   { document.getElementById('drawer').cla
+function toggleDrawer()   { document.getElementById('drawer').classList.toggle('open'); }
+function closeDrawerAll() { document.getElementById('drawer').classList.remove('open'); }
+function closeDrawer(e)   { if (e.target === document.getElementById('drawer')) closeDrawerAll(); }
+</script>
+</body>
+</html>
