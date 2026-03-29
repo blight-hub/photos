@@ -433,6 +433,9 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
       <button data-panel="alb-landscape">Landscape</button>
       <button data-panel="alb-cities">Cities</button>
       <button data-panel="alb-people">People</button>
+      <div class="nav-label">Trips</div>
+      <button data-panel="alb-japan2023">Japan 2023</button>
+      <button data-panel="alb-india2023">India 2023</button>
       <div class="nav-label">Stories</div>
       <button data-panel="stories">Visual Stories</button>
       <div class="nav-label">Info</div>
@@ -456,6 +459,9 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
       <button data-panel="alb-landscape">Landscape</button>
       <button data-panel="alb-cities">Cities</button>
       <button data-panel="alb-people">People</button>
+      <div class="nav-label">Trips</div>
+      <button data-panel="alb-japan2023">Japan 2023</button>
+      <button data-panel="alb-india2023">India 2023</button>
       <div class="nav-label">Stories</div>
       <button data-panel="stories">Visual Stories</button>
       <div class="nav-label">Info</div>
@@ -505,6 +511,24 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
       <div class="alb-grid" id="grid-people"></div>
     </div>
 
+    <!-- TRIP: JAPAN 2023 -->
+    <div class="panel" id="panel-alb-japan2023">
+      <div class="panel-head">
+        <div class="panel-title">Japan<span>Trip · 2023</span></div>
+        <div class="panel-count" id="count-japan2023"></div>
+      </div>
+      <div class="alb-grid" id="grid-japan2023"></div>
+    </div>
+
+    <!-- TRIP: INDIA 2023 -->
+    <div class="panel" id="panel-alb-india2023">
+      <div class="panel-head">
+        <div class="panel-title">India<span>Trip · 2023</span></div>
+        <div class="panel-count" id="count-india2023"></div>
+      </div>
+      <div class="alb-grid" id="grid-india2023"></div>
+    </div>
+
     <!-- VISUAL STORIES -->
     <div class="panel" id="panel-stories">
       <div class="panel-head">
@@ -542,7 +566,7 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
           <div class="about-specs">
             <b>Based in</b> &nbsp; Paris<br>
             <b>Shooting since</b> &nbsp; 2023<br>
-            <b>Contact</b> &nbsp; joaopedroferreira103@gmail.com
+            <b>Contact</b> &nbsp; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4b21242a243b2e2f39242d2e39392e22392a7a7b780b2c262a222765282426">[email&#160;protected]</a>
           </div>
           <div class="print-enquiry" onclick="window.location='mailto:joaopedroferreira103@gmail.com?subject=Print%20Enquiry&body=Hi%20Joao%2C%20I%20am%20interested%20in%20a%20print%20of...'">
             <span class="print-enquiry-text">Prints available on enquiry</span>
@@ -572,7 +596,7 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
   <div id="lb-hint">&#8592; &#8594; navigate &nbsp;&nbsp; ESC close</div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ============================================================
 //  YOUR PHOTOS
 //  src      = image path (required)
@@ -595,6 +619,19 @@ var albums = {
   ],
   people: [
     // { src: 'images/people/photo.jpg', location: '', year: '2026', camera: '', latest: false }
+  ]
+};
+
+var trips = {
+  japan2023: [
+    { src: 'images/trips/japan2023/Cat_window_japan.jpg',            location: 'Japan', year: '2023', camera: '', latest: false },
+    { src: 'images/trips/japan2023/kyoto_3women_japan.jpg',          location: 'Kyoto', year: '2023', camera: '', latest: false },
+    { src: 'images/trips/japan2023/nara_deer_looking_pagoda_japan.jpg', location: 'Nara', year: '2023', camera: '', latest: false },
+    { src: 'images/trips/japan2023/officer_shinkansen_japan.jpg',    location: 'Shinkansen', year: '2023', camera: '', latest: false },
+    { src: 'images/trips/japan2023/tokyo_skyline_dark_japan.jpg',    location: 'Tokyo', year: '2023', camera: '', latest: false }
+  ],
+  india2023: [
+    // { src: 'images/trips/india2023/photo.jpg', location: 'Mumbai', year: '2023', camera: '', latest: false }
   ]
 };
 
@@ -744,6 +781,29 @@ for (var a = 0; a < albumKeys.length; a++) {
   }(albumKeys[a]));
 }
 
+// Build trips (same logic as albums)
+var tripKeys = Object.keys(trips);
+for (var t = 0; t < tripKeys.length; t++) {
+  (function(key) {
+    var photos  = trips[key];
+    var grid    = document.getElementById('grid-' + key);
+    var countEl = document.getElementById('count-' + key);
+    countEl.textContent = photos.length + (photos.length !== 1 ? ' photographs' : ' photograph');
+    var realPhotos = photos.filter(function(p){ return p.src; });
+    var items = photos.length > 0 ? photos : (function(){ var a=[]; for(var i=0;i<6;i++) a.push({src:null}); return a; }());
+    items.forEach(function(photo, idx) {
+      var cell = document.createElement('div');
+      cell.className = 'alb-cell scroll-reveal';
+      var imgHtml = photo.src
+        ? '<img src="' + photo.src + '" alt="' + (photo.location||'') + '" loading="lazy">'
+        : phCell(bgs[idx % bgs.length]);
+      cell.innerHTML = imgHtml + metaOverlay(photo, 'alb-overlay');
+      if (photo.src) cell.onclick = function() { openLb(realPhotos, realPhotos.indexOf(photo)); };
+      grid.appendChild(cell);
+    });
+  }(tripKeys[t]));
+}
+
 // Build story list
 var storyList = document.getElementById('story-list');
 if (stories.length === 0) {
@@ -858,9 +918,4 @@ attachNav('nav-desktop');
 attachNav('nav-mobile');
 
 // Drawer
-function toggleDrawer()   { document.getElementById('drawer').classList.toggle('open'); }
-function closeDrawerAll() { document.getElementById('drawer').classList.remove('open'); }
-function closeDrawer(e)   { if (e.target === document.getElementById('drawer')) closeDrawerAll(); }
-</script>
-</body>
-</html>
+function toggleDrawer()   { document.getElementById('drawer').cla
