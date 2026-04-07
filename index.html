@@ -105,7 +105,14 @@ main::-webkit-scrollbar-track { background: transparent; }
 main::-webkit-scrollbar-thumb { background: var(--border); }
 
 .panel { display: none; }
-.panel.active { display: block; animation: reveal 0.4s ease forwards; }
+.panel.active {
+  display: block;
+  animation: reveal 0.35s ease forwards;
+}
+.panel.fade-out {
+  animation: fadeOut 0.2s ease forwards;
+}
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
 
 @keyframes reveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -318,9 +325,27 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
 }
 #lightbox.open { display: flex; animation: reveal 0.25s ease; }
 
-#lb-img-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
+#lb-img-wrap { position: relative; display: flex; align-items: center; justify-content: center; min-height: 120px; }
 
-#lightbox img { max-width: 82vw; max-height: 80vh; object-fit: contain; cursor: default; display: none; }
+#lightbox img {
+  max-width: 82vw; max-height: 80vh; object-fit: contain; cursor: default;
+  opacity: 0; transition: opacity 0.3s ease;
+}
+#lightbox img.loaded { opacity: 1; }
+
+/* spinner */
+#lb-spinner {
+  position: absolute;
+  width: 28px; height: 28px;
+  border: 1px solid var(--muted);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+#lb-spinner.active { display: block; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* lightbox arrows */
 .lb-arrow {
@@ -585,6 +610,7 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
   <button class="lb-arrow prev" id="lb-prev" onclick="lbNav(-1)">&#8592;</button>
   <button class="lb-arrow next" id="lb-next" onclick="lbNav(1)">&#8594;</button>
   <div id="lb-img-wrap">
+    <div id="lb-spinner"></div>
     <img id="lb-img" src="" alt="">
   </div>
   <div id="lb-bottom">
@@ -593,7 +619,7 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
     <span id="lb-camera"></span>
     <span id="lb-counter"></span>
   </div>
-  <div id="lb-hint">&#8592; &#8594; navigate &nbsp;&nbsp; ESC close</div>
+  <div id="lb-hint">&#8592; &#8594; navigate &nbsp;&nbsp; swipe down to close</div>
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -624,11 +650,11 @@ var albums = {
 
 var trips = {
   japan2023: [
-    { src: 'images/japan/IMG_0468_dt.jpg',               location: 'Japan', year: '2023', camera: '', latest: false },
-    { src: 'images/japan/IMG_0971_dt.jpg',              location: 'Japan', year: '2023', camera: '', latest: false },
-    { src: 'images/japan/IMG_0995_dt.jpg',  location: 'Japan', year: '2023', camera: '', latest: false },
-    { src: 'images/japan/IMG_1324_dt.jpg',        location: 'Japan', year: '2023', camera: '', latest: false },
-    { src: 'images/japan/IMG_1530_dt.jpg',        location: 'Japan', year: '2023', camera: '', latest: false }
+    { src: 'images/japan/Cat_window_japan.jpg',               location: 'Japan', year: '2023', camera: '', latest: false },
+    { src: 'images/japan/kyoto_3women_japan.jpg',              location: 'Japan', year: '2023', camera: '', latest: false },
+    { src: 'images/japan/nara_deer_looking_pagoda_japan.jpg',  location: 'Japan', year: '2023', camera: '', latest: false },
+    { src: 'images/japan/officer_shinkansen_japan.jpg',        location: 'Japan', year: '2023', camera: '', latest: false },
+    { src: 'images/japan/tokyo_skyline_dark_japan.jpg',        location: 'Japan', year: '2023', camera: '', latest: false }
   ],
   india2023: [
     // { src: 'images/india/photo.jpg', location: 'India', year: '2023', camera: '', latest: false }
@@ -693,8 +719,13 @@ function openLb(photos, idx) {
 function renderLb() {
   var photo = lbPhotos[lbIndex];
   var img = document.getElementById('lb-img');
-  img.src = photo.src;
-  img.style.display = 'block';
+  var spinner = document.getElementById('lb-spinner');
+
+  // reset image, show spinner
+  img.classList.remove('loaded');
+  spinner.classList.add('active');
+
+  // set metadata immediately
   document.getElementById('lb-location').textContent = photo.location || '';
   document.getElementById('lb-year').textContent     = photo.year     || '';
   document.getElementById('lb-camera').textContent   = photo.camera   || '';
@@ -702,6 +733,18 @@ function renderLb() {
   document.getElementById('lb-prev').classList.toggle('hidden', lbIndex === 0);
   document.getElementById('lb-next').classList.toggle('hidden', lbIndex === lbPhotos.length - 1);
   document.getElementById('lb-hint').style.display = lbPhotos.length > 1 ? 'block' : 'none';
+
+  // load image
+  var tempImg = new Image();
+  tempImg.onload = function() {
+    img.src = photo.src;
+    spinner.classList.remove('active');
+    img.classList.add('loaded');
+  };
+  tempImg.onerror = function() {
+    spinner.classList.remove('active');
+  };
+  tempImg.src = photo.src;
 }
 
 function lbNav(dir) {
@@ -718,6 +761,30 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowRight')  lbNav(1);
   if (e.key === 'ArrowLeft')   lbNav(-1);
 });
+
+// Touch swipe support for mobile lightbox
+(function() {
+  var lb = document.getElementById('lightbox');
+  var touchStartX = 0;
+  var touchStartY = 0;
+
+  lb.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  lb.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var dy = e.changedTouches[0].clientY - touchStartY;
+    // only register horizontal swipes (ignore scrolls)
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+      if (dx < 0) lbNav(1);  // swipe left = next
+      else        lbNav(-1); // swipe right = prev
+    }
+    // swipe down to close
+    if (dy > 80 && Math.abs(dx) < 40) closeLb();
+  }, { passive: true });
+}());
 
 // Build highlights
 var hlGrid  = document.getElementById('hl-grid');
@@ -891,14 +958,28 @@ function switchPanel(panelKey) {
   for (var i = 0; i < buttons.length; i++) {
     buttons[i].classList.toggle('active', buttons[i].getAttribute('data-panel') === panelKey);
   }
-  var panels = document.querySelectorAll('.panel');
-  for (var j = 0; j < panels.length; j++) panels[j].classList.remove('active');
-  var panel = document.getElementById('panel-' + panelKey);
-  if (panel) {
-    panel.classList.add('active');
+
+  // crossfade: fade out current, then swap
+  var current = document.querySelector('.panel.active');
+  var next = document.getElementById('panel-' + panelKey);
+  if (!next) return;
+
+  if (current && current !== next) {
+    current.classList.add('fade-out');
+    setTimeout(function() {
+      current.classList.remove('active', 'fade-out');
+      next.classList.add('active');
+      document.getElementById('main').scrollTo(0, 0);
+      setTimeout(initScrollReveal, 100);
+    }, 180);
+  } else if (!current) {
+    next.classList.add('active');
     document.getElementById('main').scrollTo(0, 0);
     setTimeout(initScrollReveal, 100);
   }
+
+  // remember last tab
+  try { localStorage.setItem('jf_panel', panelKey); } catch(e) {}
 }
 
 function attachNav(navId) {
@@ -916,6 +997,15 @@ function attachNav(navId) {
 
 attachNav('nav-desktop');
 attachNav('nav-mobile');
+
+// Restore last visited tab
+try {
+  var saved = localStorage.getItem('jf_panel');
+  if (saved && document.getElementById('panel-' + saved)) {
+    document.querySelector('.panel.active').classList.remove('active');
+    switchPanel(saved);
+  }
+} catch(e) {}
 
 // Drawer
 function toggleDrawer()   { document.getElementById('drawer').classList.toggle('open'); }
