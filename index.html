@@ -6,6 +6,7 @@
 <title>Joao Ferreira - In Search Of</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23222222'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='IBM Plex Mono%2C monospace' font-size='13' font-weight='300' fill='%23ffffff' letter-spacing='1'%3EJF%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&family=IBM+Plex+Sans:ital,wght@0,200;0,300;1,200&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -37,7 +38,7 @@ body::after {
   background-size: 180px 180px;
 }
 
-/* ── LAYOUT ── */
+/* LAYOUT */
 .shell {
   display: grid;
   grid-template-columns: var(--sidebar) 1fr;
@@ -45,7 +46,7 @@ body::after {
   overflow: hidden;
 }
 
-/* ── SIDEBAR ── */
+/* SIDEBAR */
 aside {
   display: flex; flex-direction: column;
   padding: 36px 28px;
@@ -77,7 +78,7 @@ nav button.active { color: var(--fg); border-left-color: var(--accent); }
 
 .sidebar-foot { font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
 
-/* ── MOBILE TOPBAR ── */
+/* MOBILE TOPBAR */
 .topbar {
   display: none; position: fixed; top: 0; left: 0; right: 0;
   z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border);
@@ -88,7 +89,7 @@ nav button.active { color: var(--fg); border-left-color: var(--accent); }
 .burger span { display: block; width: 22px; height: 1px; background: var(--dim); transition: background 0.2s; }
 .burger:hover span { background: var(--fg); }
 
-/* ── MOBILE DRAWER ── */
+/* MOBILE DRAWER */
 .drawer { display: none; position: fixed; inset: 0; z-index: 99; background: rgba(0,0,0,0.7); }
 .drawer.open { display: block; }
 .drawer-inner {
@@ -98,61 +99,37 @@ nav button.active { color: var(--fg); border-left-color: var(--accent); }
 }
 .drawer-inner nav { margin: 24px 0; justify-content: flex-start; }
 
-/* ── MAIN ── */
+/* MAIN */
 main { overflow-y: auto; overflow-x: hidden; background: var(--bg); }
 main::-webkit-scrollbar { width: 3px; }
 main::-webkit-scrollbar-track { background: transparent; }
 main::-webkit-scrollbar-thumb { background: var(--border); }
 
 .panel { display: none; }
-.panel.active {
-  display: block;
-  animation: reveal 0.35s ease forwards;
-}
-.panel.fade-out {
-  animation: fadeOut 0.2s ease forwards;
-}
+.panel.active { display: block; animation: reveal 0.35s ease forwards; }
+.panel.fade-out { animation: fadeOut 0.2s ease forwards; }
 @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
-
 @keyframes reveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ── PANEL HEADER ── */
+/* PANEL HEADER */
 .panel-head { padding: 48px 56px 36px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-end; justify-content: space-between; }
 .panel-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg); }
 .panel-title span { display: block; font-size: 0.52rem; color: var(--dim); letter-spacing: 0.2em; margin-top: 6px; font-weight: 300; }
 .panel-count { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 0.16em; color: var(--muted); text-align: right; line-height: 2; }
 
-/* ── LATEST STRIP ── */
-.latest-strip {
-  padding: 32px 56px;
-  border-bottom: 1px solid var(--border);
-}
-.latest-label {
-  font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem;
-  letter-spacing: 0.26em; text-transform: uppercase; color: var(--dim);
-  margin-bottom: 16px;
-}
-.latest-row {
-  display: flex; gap: 3px;
-}
-.latest-cell {
-  flex: 1; aspect-ratio: 3/2; overflow: hidden; cursor: pointer;
-  position: relative; background: var(--surface);
-  transition: flex 0.4s ease;
-}
+/* LATEST STRIP */
+.latest-strip { padding: 32px 56px; border-bottom: 1px solid var(--border); }
+.latest-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--dim); margin-bottom: 16px; }
+.latest-row { display: flex; gap: 3px; }
+.latest-cell { flex: 1; aspect-ratio: 3/2; overflow: hidden; cursor: pointer; position: relative; background: var(--surface); transition: flex 0.4s ease; }
 .latest-cell:hover { flex: 1.6; }
-.latest-cell img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: filter 0.4s;
-  filter: grayscale(20%) brightness(0.8);
-}
+.latest-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: filter 0.4s; filter: grayscale(20%) brightness(0.8); }
 .latest-cell:hover img { filter: grayscale(0%) brightness(1); }
 .latest-cell .hl-overlay { background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%); }
 .latest-cell:hover .hl-overlay { opacity: 1; }
 
-/* ── HIGHLIGHTS GRID ── */
+/* HIGHLIGHTS GRID */
 .hl-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; padding: 2px; }
-
 .hl-cell { overflow: hidden; cursor: pointer; position: relative; background: var(--surface); }
 .hl-cell:nth-child(1) { grid-column: 1/8;  aspect-ratio: 16/9; }
 .hl-cell:nth-child(2) { grid-column: 8/13; aspect-ratio: 4/5; }
@@ -162,7 +139,6 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
 .hl-cell:nth-child(6) { grid-column: 1/6;  aspect-ratio: 3/2; }
 .hl-cell:nth-child(7) { grid-column: 6/9;  aspect-ratio: 3/2; }
 .hl-cell:nth-child(8) { grid-column: 9/13; aspect-ratio: 3/2; }
-
 .hl-cell img, .alb-cell img {
   width: 100%; height: 100%; object-fit: cover; display: block;
   transition: transform 0.8s cubic-bezier(.25,.46,.45,.94), filter 0.5s;
@@ -171,15 +147,11 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
 .hl-cell:hover img { transform: scale(1.05); filter: grayscale(0%) brightness(1); }
 .alb-cell:hover img { transform: scale(1.05); filter: grayscale(0%) brightness(1); }
 
-/* ── SCROLL REVEAL ── */
-.scroll-reveal {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
+/* SCROLL REVEAL */
+.scroll-reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* ── OVERLAYS ── */
+/* OVERLAYS */
 .hl-overlay, .alb-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%);
@@ -187,114 +159,51 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: 14px 16px 12px; gap: 3px;
 }
-.hl-cell:hover .hl-overlay,
-.alb-cell:hover .alb-overlay { opacity: 1; }
-
+.hl-cell:hover .hl-overlay, .alb-cell:hover .alb-overlay { opacity: 1; }
 .meta-location { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(232,232,232,0.95); line-height: 1; }
 .meta-row { display: flex; gap: 12px; align-items: center; }
 .meta-year { font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.14em; color: rgba(200,255,0,0.85); }
 .meta-camera { font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.1em; color: rgba(180,180,180,0.6); }
-
 .ph { width: 100%; height: 100%; min-height: 120px; display: flex; align-items: center; justify-content: center; }
 
-/* ── ALBUM GRID ── */
+/* ALBUM GRID */
 .alb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 2px; }
 .alb-cell { aspect-ratio: 3/2; overflow: hidden; cursor: pointer; position: relative; background: var(--surface); }
 
-/* ── VISUAL STORIES ── */
-.story-list { padding: 0; }
+/* BACK TO MAP */
+.back-to-map { padding: 14px 56px; border-bottom: 1px solid var(--border); display: none; }
+.back-to-map button { background: none; border: none; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); transition: color 0.2s; padding: 0; }
+.back-to-map button:hover { color: var(--accent); }
 
-.story-card {
-  display: flex; align-items: stretch;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background 0.2s;
-  min-height: 160px;
-}
+/* VISUAL STORIES */
+.story-list { padding: 0; }
+.story-card { display: flex; align-items: stretch; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s; min-height: 160px; }
 .story-card:hover { background: rgba(255,255,255,0.02); }
 .story-card:first-child { border-top: 1px solid var(--border); }
-
-.story-thumb {
-  width: 240px; flex-shrink: 0;
-  overflow: hidden; position: relative;
-  background: var(--surface);
-}
+.story-thumb { width: 240px; flex-shrink: 0; overflow: hidden; position: relative; background: var(--surface); }
 .story-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(20%) brightness(0.8); transition: filter 0.4s; }
 .story-card:hover .story-thumb img { filter: grayscale(0%) brightness(1); }
-
-.story-info {
-  padding: 36px 48px;
-  display: flex; flex-direction: column; justify-content: center; gap: 12px;
-}
-
-.story-title {
-  font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
-  font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg);
-}
-
-.story-desc {
-  font-size: 0.76rem; line-height: 1.9; color: var(--mid);
-  font-style: italic; max-width: 480px;
-}
-
-.story-meta {
-  font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem;
-  letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim);
-  display: flex; gap: 16px;
-}
-
-/* ── VISUAL STORY READER ── */
+.story-info { padding: 36px 48px; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+.story-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg); }
+.story-desc { font-size: 0.76rem; line-height: 1.9; color: var(--mid); font-style: italic; max-width: 480px; }
+.story-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); display: flex; gap: 16px; }
 .story-reader { display: none; }
 .story-reader.active { display: block; }
-
-.story-reader-back {
-  padding: 28px 56px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 16px;
-}
-
-.back-btn {
-  background: none; border: none; cursor: pointer;
-  font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--dim); transition: color 0.2s; padding: 0;
-}
+.story-reader-back { padding: 28px 56px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+.back-btn { background: none; border: none; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); transition: color 0.2s; padding: 0; }
 .back-btn:hover { color: var(--accent); }
-
-.story-reader-title {
-  font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg);
-}
-
+.story-reader-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg); }
 .story-body { max-width: 680px; margin: 0 auto; padding: 64px 32px 100px; }
-
-.story-body .s-img {
-  width: 100%; margin: 48px 0;
-  opacity: 0; transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
+.story-body .s-img { width: 100%; margin: 48px 0; opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .story-body .s-img.visible { opacity: 1; transform: translateY(0); }
-
 .story-body .s-img img { width: 100%; display: block; }
-
 .story-body .s-img.full { max-width: none; margin-left: calc(-1 * (50vw - 340px)); width: 100vw; }
-
-.story-body .s-text {
-  font-size: 0.82rem; line-height: 2.1; color: var(--mid);
-  font-style: italic; margin: 32px 0;
-  opacity: 0; transform: translateY(16px);
-  transition: opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s;
-}
+.story-body .s-text { font-size: 0.82rem; line-height: 2.1; color: var(--mid); font-style: italic; margin: 32px 0; opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s; }
 .story-body .s-text.visible { opacity: 1; transform: translateY(0); }
-
-.story-body .s-location {
-  font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim);
-  margin: -24px 0 32px;
-  opacity: 0; transition: opacity 0.5s ease 0.2s;
-}
+.story-body .s-location { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin: -24px 0 32px; opacity: 0; transition: opacity 0.5s ease 0.2s; }
 .story-body .s-location.visible { opacity: 1; }
 
-/* ── ABOUT ── */
+/* ABOUT */
 .about-wrap { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
 .about-img { background: #0f0f0f; display: flex; align-items: center; justify-content: center; min-height: 300px; border-right: 1px solid var(--border); }
 .about-text { padding: 80px 64px; display: flex; flex-direction: column; justify-content: center; }
@@ -302,127 +211,132 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
 .about-body { font-size: 0.78rem; line-height: 2; color: var(--mid); max-width: 380px; font-style: italic; }
 .about-specs { margin-top: 48px; font-family: 'IBM Plex Mono', monospace; font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); line-height: 2.6; border-top: 1px solid var(--border); padding-top: 32px; }
 .about-specs b { color: var(--dim); font-weight: 400; }
-
-.print-enquiry {
-  margin-top: 32px;
-  padding: 20px 24px;
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  cursor: pointer; transition: border-color 0.2s, background 0.2s;
-}
+.print-enquiry { margin-top: 32px; padding: 20px 24px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
 .print-enquiry:hover { border-color: var(--accent); background: rgba(200,255,0,0.03); }
-
 .print-enquiry-text { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); transition: color 0.2s; }
 .print-enquiry:hover .print-enquiry-text { color: var(--accent); }
 .print-enquiry-arrow { font-size: 0.9rem; color: var(--muted); transition: color 0.2s, transform 0.2s; display: inline-block; }
 .print-enquiry:hover .print-enquiry-arrow { color: var(--accent); transform: translate(3px,-3px); }
 
-/* ── LIGHTBOX ── */
-#lightbox {
-  position: fixed; inset: 0; background: rgba(8,8,8,0.97);
-  z-index: 1000; display: none;
-  align-items: center; justify-content: center; flex-direction: column;
-}
+/* LIGHTBOX */
+#lightbox { position: fixed; inset: 0; background: rgba(8,8,8,0.97); z-index: 1000; display: none; align-items: center; justify-content: center; flex-direction: column; }
 #lightbox.open { display: flex; animation: reveal 0.25s ease; }
-
 #lb-img-wrap { position: relative; display: flex; align-items: center; justify-content: center; min-height: 120px; }
-
-#lightbox img {
-  max-width: 82vw; max-height: 80vh; object-fit: contain; cursor: default;
-  opacity: 0; transition: opacity 0.3s ease;
-}
+#lightbox img { max-width: 82vw; max-height: 80vh; object-fit: contain; cursor: default; opacity: 0; transition: opacity 0.3s ease; }
 #lightbox img.loaded { opacity: 1; }
-
-/* spinner */
-#lb-spinner {
-  position: absolute;
-  width: 28px; height: 28px;
-  border: 1px solid var(--muted);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  display: none;
-}
+#lb-spinner { position: absolute; width: 28px; height: 28px; border: 1px solid var(--muted); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
 #lb-spinner.active { display: block; }
-
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* lightbox arrows */
-.lb-arrow {
-  position: fixed; top: 50%; transform: translateY(-50%);
-  background: none; border: none; cursor: pointer;
-  font-family: 'IBM Plex Mono', monospace; font-size: 1.2rem;
-  color: var(--dim); padding: 20px; transition: color 0.2s;
-  z-index: 1001; user-select: none;
-}
+.lb-arrow { position: fixed; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 1.2rem; color: var(--dim); padding: 20px; transition: color 0.2s; z-index: 1001; user-select: none; }
 .lb-arrow:hover { color: var(--fg); }
 .lb-arrow.prev { left: 16px; }
 .lb-arrow.next { right: 16px; }
 .lb-arrow.hidden { opacity: 0; pointer-events: none; }
-
-#lb-bottom {
-  margin-top: 18px;
-  display: flex; align-items: baseline;
-  gap: 20px;
-}
-
+#lb-bottom { margin-top: 18px; display: flex; align-items: baseline; gap: 20px; }
 #lb-location { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); }
 #lb-year { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; color: var(--accent); }
 #lb-camera { font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem; letter-spacing: 0.1em; color: var(--muted); }
-
-#lb-counter {
-  font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem;
-  letter-spacing: 0.14em; color: var(--muted); margin-left: auto;
-}
-
-#lb-hint {
-  margin-top: 10px;
-  font-family: 'IBM Plex Mono', monospace; font-size: 0.48rem;
-  letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
-  opacity: 0.6;
-}
-
-#lb-close {
-  position: fixed; top: 28px; right: 36px;
-  background: none; border: none; color: var(--dim);
-  font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem;
-  letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; transition: color 0.2s;
-}
+#lb-counter { font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem; letter-spacing: 0.14em; color: var(--muted); margin-left: auto; }
+#lb-hint { margin-top: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 0.48rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); opacity: 0.6; }
+#lb-close { position: fixed; top: 28px; right: 36px; background: none; border: none; color: var(--dim); font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; transition: color 0.2s; }
 #lb-close:hover { color: var(--accent); }
 
-/* ── MOBILE ── */
+/* MAP PANEL */
+#panel-map { height: 100vh; display: none; flex-direction: column; overflow: hidden; }
+#panel-map.active { display: flex; animation: reveal 0.4s ease forwards; }
+#map-container { flex: 1; position: relative; min-height: 0; }
+#the-map { width: 100%; height: 100%; background: #0a0a0a; }
+.leaflet-tile { filter: brightness(0.45) saturate(0.3) contrast(1.15); }
+.leaflet-container { background: #0a0a0a; font-family: 'IBM Plex Mono', monospace; }
+.leaflet-control-zoom { border: none !important; }
+.leaflet-control-zoom a { background: #111 !important; color: var(--dim) !important; border: 1px solid var(--border) !important; width: 28px; height: 28px; line-height: 28px; }
+.leaflet-control-zoom a:hover { background: #1a1a1a !important; color: var(--fg) !important; }
+.leaflet-control-attribution { background: rgba(0,0,0,0.5) !important; color: #333 !important; font-size: 8px !important; }
+.leaflet-popup-content-wrapper { background: #0e0e0e !important; border: 1px solid var(--border) !important; border-radius: 2px !important; box-shadow: 0 12px 40px rgba(0,0,0,0.85) !important; padding: 0 !important; }
+.leaflet-popup-tip { background: #0e0e0e !important; }
+.leaflet-popup-close-button { color: var(--muted) !important; top: 10px !important; right: 10px !important; font-size: 18px !important; }
+.leaflet-popup-close-button:hover { color: var(--fg) !important; }
+.leaflet-popup-content { margin: 0 !important; width: 260px !important; }
+
+/* map marker */
+.map-dot-wrap { position: relative; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.map-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); border: 1px solid var(--muted); transition: background 0.4s, transform 0.4s, box-shadow 0.4s; cursor: pointer; }
+.map-dot-wrap.active .map-dot { background: var(--accent); transform: scale(1.4); box-shadow: 0 0 0 3px rgba(200,255,0,0.2), 0 0 10px rgba(200,255,0,0.35); }
+.map-dot-wrap.active .map-pulse { display: block; }
+.map-dot-wrap.visited .map-dot { background: #444; border-color: #555; }
+.map-pulse { display: none; position: absolute; width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(200,255,0,0.5); animation: pulse 2s ease-out infinite; }
+@keyframes pulse { 0% { transform: scale(0.5); opacity: 0.8; } 100% { transform: scale(2.2); opacity: 0; } }
+
+/* popup content */
+.pop-photos { display: grid; gap: 2px; background: #0a0a0a; }
+.pop-photos.n1 { grid-template-columns: 1fr; }
+.pop-photos.n2 { grid-template-columns: 1fr 1fr; }
+.pop-photos.n3 { grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; }
+.pop-photos img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.85); transition: filter 0.3s; }
+.pop-photos img:hover { filter: brightness(1); }
+.pop-photos.n1 img { height: 150px; }
+.pop-photos.n2 img { height: 110px; }
+.pop-photos.n3 .pm { grid-row: 1/3; height: 110px; }
+.pop-photos.n3 .ps { height: 54px; }
+.pop-no-photo { height: 64px; background: #111; display: flex; align-items: center; justify-content: center; }
+.pop-info { padding: 14px 16px 12px; }
+.pop-city { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg); }
+.pop-country { font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); margin-top: 2px; }
+.pop-date { font-family: 'IBM Plex Mono', monospace; font-size: 0.48rem; letter-spacing: 0.16em; color: var(--accent); margin-top: 5px; }
+.pop-btn { display: inline-block; margin-top: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); cursor: pointer; background: none; border: none; border-bottom: 1px solid rgba(200,255,0,0.25); padding: 0 0 2px; transition: color 0.2s, border-color 0.2s; }
+.pop-btn:hover { color: var(--fg); border-bottom-color: var(--fg); }
+
+/* timeline */
+#map-tl { flex-shrink: 0; height: 100px; border-top: 1px solid var(--border); background: var(--surface); display: flex; align-items: center; overflow-x: auto; overflow-y: hidden; padding: 0 40px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; position: relative; }
+#map-tl::-webkit-scrollbar { height: 2px; }
+#map-tl::-webkit-scrollbar-thumb { background: var(--border); }
+#tl-progress { position: absolute; top: 0; left: 0; height: 1px; background: var(--accent); opacity: 0.5; transition: width 0.4s ease; width: 0; }
+.tl-sep { width: 40px; height: 1px; background: var(--border); flex-shrink: 0; align-self: center; margin-bottom: 18px; }
+.tl-item { display: flex; flex-direction: column; align-items: center; padding: 0 16px; cursor: pointer; flex-shrink: 0; opacity: 0.35; transition: opacity 0.3s; }
+.tl-item:hover { opacity: 0.7; }
+.tl-item.active { opacity: 1; }
+.tl-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); margin-bottom: 9px; transition: background 0.35s, transform 0.35s, box-shadow 0.35s; }
+.tl-item.active .tl-dot { background: var(--accent); transform: scale(1.6); box-shadow: 0 0 6px rgba(200,255,0,0.4); }
+.tl-item.visited .tl-dot { background: #444; }
+.tl-city { font-family: 'IBM Plex Mono', monospace; font-size: 0.54rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg); white-space: nowrap; }
+.tl-date { font-family: 'IBM Plex Mono', monospace; font-size: 0.44rem; letter-spacing: 0.12em; color: var(--dim); margin-top: 3px; white-space: nowrap; }
+
+/* map controls */
+#map-controls { position: absolute; bottom: 108px; right: 16px; display: flex; gap: 6px; z-index: 500; }
+.map-btn { background: rgba(10,10,10,0.85); border: 1px solid var(--border); color: var(--dim); font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; padding: 7px 12px; transition: color 0.2s, border-color 0.2s; }
+.map-btn:hover { color: var(--accent); border-color: var(--accent); }
+.map-btn.playing { color: var(--accent); border-color: rgba(200,255,0,0.4); }
+#map-counter { position: absolute; top: 16px; left: 16px; background: rgba(10,10,10,0.8); border: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); padding: 7px 12px; z-index: 500; pointer-events: none; }
+
+/* MOBILE */
 @media (max-width: 768px) {
   .shell { grid-template-columns: 1fr; }
   aside.desktop-sidebar { display: none; }
   .topbar { display: flex; }
   main { padding-top: 52px; }
-
   .panel-head { padding: 28px 20px 20px; flex-direction: column; align-items: flex-start; gap: 8px; }
   .panel-count { text-align: left; }
   .latest-strip { padding: 24px 16px; }
-
   .hl-grid { grid-template-columns: repeat(2, 1fr); }
   .hl-cell:nth-child(1), .hl-cell:nth-child(2), .hl-cell:nth-child(3),
   .hl-cell:nth-child(4), .hl-cell:nth-child(5), .hl-cell:nth-child(6),
   .hl-cell:nth-child(7), .hl-cell:nth-child(8) { grid-column: auto; aspect-ratio: 4/3; }
-
   .alb-grid { grid-template-columns: repeat(2, 1fr); }
-
   .about-wrap { grid-template-columns: 1fr; min-height: auto; }
   .about-img { min-height: 220px; border-right: none; border-bottom: 1px solid var(--border); }
   .about-text { padding: 40px 24px; }
   .about-body { max-width: 100%; }
-
   .story-card { flex-direction: column; }
   .story-thumb { width: 100%; height: 180px; }
   .story-info { padding: 24px 20px; }
-
-  .story-reader-back { padding: 20px 20px; }
+  .story-reader-back { padding: 20px; }
   .story-body { padding: 40px 20px 80px; }
   .story-body .s-img.full { margin-left: -20px; width: calc(100% + 40px); }
-
   .lb-arrow { font-size: 1rem; padding: 12px; }
   #lightbox img { max-width: 94vw; max-height: 72vh; }
+  #map-tl { height: 80px; padding: 0 16px; }
+  #map-controls { bottom: 88px; right: 10px; }
+  .back-to-map { padding: 14px 20px; }
 }
 
 @media (max-width: 420px) {
@@ -461,6 +375,8 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
       <div class="nav-label">Trips</div>
       <button data-panel="alb-japan2023">Japan 2023</button>
       <button data-panel="alb-india2023">India 2023</button>
+      <div class="nav-label">World</div>
+      <button data-panel="map">Map</button>
       <div class="nav-label">Stories</div>
       <button data-panel="stories">Visual Stories</button>
       <div class="nav-label">Info</div>
@@ -487,6 +403,8 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
       <div class="nav-label">Trips</div>
       <button data-panel="alb-japan2023">Japan 2023</button>
       <button data-panel="alb-india2023">India 2023</button>
+      <div class="nav-label">World</div>
+      <button data-panel="map">Map</button>
       <div class="nav-label">Stories</div>
       <button data-panel="stories">Visual Stories</button>
       <div class="nav-label">Info</div>
@@ -503,7 +421,6 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
         <div class="panel-title">Highlights<span>Selected works</span></div>
         <div class="panel-count" id="hl-count"></div>
       </div>
-      <!-- LATEST STRIP -->
       <div class="latest-strip" id="latest-strip" style="display:none">
         <div class="latest-label">Latest</div>
         <div class="latest-row" id="latest-row"></div>
@@ -536,22 +453,43 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
       <div class="alb-grid" id="grid-people"></div>
     </div>
 
-    <!-- TRIP: JAPAN 2023 -->
+    <!-- TRIPS -->
     <div class="panel" id="panel-alb-japan2023">
       <div class="panel-head">
         <div class="panel-title">Japan<span>Trip · 2023</span></div>
         <div class="panel-count" id="count-japan2023"></div>
       </div>
+      <div class="back-to-map" id="btm-japan2023">
+        <button onclick="goBackToMap('japan2023')">&#8592; Back to Map</button>
+      </div>
       <div class="alb-grid" id="grid-japan2023"></div>
     </div>
 
-    <!-- TRIP: INDIA 2023 -->
     <div class="panel" id="panel-alb-india2023">
       <div class="panel-head">
         <div class="panel-title">India<span>Trip · 2023</span></div>
         <div class="panel-count" id="count-india2023"></div>
       </div>
+      <div class="back-to-map" id="btm-india2023">
+        <button onclick="goBackToMap('india2023')">&#8592; Back to Map</button>
+      </div>
       <div class="alb-grid" id="grid-india2023"></div>
+    </div>
+
+    <!-- MAP -->
+    <div class="panel" id="panel-map">
+      <div id="map-container">
+        <div id="the-map"></div>
+        <div id="map-counter"></div>
+        <div id="map-controls">
+          <button class="map-btn" onclick="mapNav(-1)">&#8592;</button>
+          <button class="map-btn" id="btn-play" onclick="toggleAutoPlay()">&#9654; Auto</button>
+          <button class="map-btn" onclick="mapNav(1)">&#8594;</button>
+        </div>
+      </div>
+      <div id="map-tl">
+        <div id="tl-progress"></div>
+      </div>
     </div>
 
     <!-- VISUAL STORIES -->
@@ -559,14 +497,10 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
       <div class="panel-head">
         <div class="panel-title">Visual Stories<span>Long-form photo essays</span></div>
       </div>
-
-      <!-- Story index list -->
       <div class="story-list" id="story-list"></div>
-
-      <!-- Story reader (shown when a story is opened) -->
       <div class="story-reader" id="story-reader">
         <div class="story-reader-back">
-          <button class="back-btn" onclick="closeStory()">← Back</button>
+          <button class="back-btn" onclick="closeStory()">&#8592; Back</button>
           <span class="story-reader-title" id="reader-title"></span>
         </div>
         <div class="story-body" id="reader-body"></div>
@@ -591,11 +525,11 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
           <div class="about-specs">
             <b>Based in</b> &nbsp; Paris<br>
             <b>Shooting since</b> &nbsp; 2023<br>
-            <b>Contact</b> &nbsp; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4b21242a243b2e2f39242d2e39392e22392a7a7b780b2c262a222765282426">[email&#160;protected]</a>
+            <b>Contact</b> &nbsp; joaopedroferreira103@gmail.com
           </div>
           <div class="print-enquiry" onclick="window.location='mailto:joaopedroferreira103@gmail.com?subject=Print%20Enquiry&body=Hi%20Joao%2C%20I%20am%20interested%20in%20a%20print%20of...'">
             <span class="print-enquiry-text">Prints available on enquiry</span>
-            <span class="print-enquiry-arrow">↗</span>
+            <span class="print-enquiry-arrow">&#8599;</span>
           </div>
         </div>
       </div>
@@ -624,28 +558,16 @@ main::-webkit-scrollbar-thumb { background: var(--border); }
 
 <script>
 // ============================================================
-//  YOUR PHOTOS
-//  src      = image path (required)
-//  location = e.g. 'Paris' (optional)
-//  year     = e.g. '2026' (optional)
-//  camera   = e.g. 'Ricoh GR' (optional)
-//  latest   = true  ->  appears in the Latest strip on Highlights
+//  YOUR PHOTOS — edit here
 // ============================================================
-
 var hlPhotos = [
   { src: 'images/highlights/eiffel_tower_sunset.jpg', location: 'Paris', year: '2026', camera: '', latest: true }
 ];
 
 var albums = {
-  landscape: [
-    // { src: 'images/landscape/photo.jpg', location: 'Normandy', year: '2026', camera: '', latest: false }
-  ],
-  cities: [
-    // { src: 'images/cities/photo.jpg', location: 'Paris', year: '2026', camera: 'Ricoh GR', latest: true }
-  ],
-  people: [
-    // { src: 'images/people/photo.jpg', location: '', year: '2026', camera: '', latest: false }
-  ]
+  landscape: [],
+  cities:    [],
+  people:    []
 };
 
 var trips = {
@@ -656,45 +578,32 @@ var trips = {
     { src: 'images/japan/IMG_1324_dt.jpg', location: 'Japan', year: '2023', camera: '', latest: false },
     { src: 'images/japan/IMG_1530_dt.jpg', location: 'Japan', year: '2023', camera: '', latest: false }
   ],
-  india2023: [
-    // { src: 'images/india/photo.jpg', location: 'India', year: '2023', camera: '', latest: false }
-  ]
+  india2023: []
 };
 
-// ============================================================
-//  YOUR VISUAL STORIES
-//  Each story has a title, cover image, description, location,
-//  year, and a sequence of blocks (image or text).
-// ============================================================
+var stories = [];
 
-var stories = [
-  // {
-  //   title: 'Paris, Always',
-  //   cover: 'images/stories/paris-cover.jpg',
-  //   desc: 'Three days, one arrondissement, a thousand small moments.',
-  //   location: 'Paris, France',
-  //   year: '2026',
-  //   blocks: [
-  //     { type: 'text', content: 'It started raining on the second morning...' },
-  //     { type: 'image', src: 'images/stories/paris-01.jpg', location: 'Rue de Rivoli', full: false },
-  //     { type: 'location', content: 'Marais, 09:14' },
-  //     { type: 'text', content: 'The light through the market awning...' },
-  //     { type: 'image', src: 'images/stories/paris-02.jpg', location: '', full: true },
-  //   ]
-  // }
+// ============================================================
+//  MAP DATA — sample trips shown until you update with your own
+// ============================================================
+var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+var tripsData = [
+  { city: 'Lisbon',   country: 'Portugal', lat: 38.7169, lng: -9.1395,   year: 2021, month: 6,  id: null,         photos: [] },
+  { city: 'London',   country: 'UK',       lat: 51.5074, lng: -0.1278,   year: 2022, month: 3,  id: null,         photos: [] },
+  { city: 'Tokyo',    country: 'Japan',    lat: 35.6762, lng: 139.6503,  year: 2023, month: 1,  id: 'japan2023',  photos: ['images/japan/IMG_0468_dt.jpg','images/japan/IMG_0971_dt.jpg','images/japan/IMG_1324_dt.jpg'] },
+  { city: 'Mumbai',   country: 'India',    lat: 19.0760, lng: 72.8777,   year: 2023, month: 8,  id: 'india2023',  photos: [] },
+  { city: 'New York', country: 'USA',      lat: 40.7128, lng: -74.0060,  year: 2024, month: 2,  id: null,         photos: [] },
+  { city: 'Paris',    country: 'France',   lat: 48.8566, lng: 2.3522,    year: 2026, month: 1,  id: null,         photos: ['images/highlights/eiffel_tower_sunset.jpg'] }
 ];
 
 // ============================================================
 //  ENGINE
 // ============================================================
-
 var bgs = ['#141414','#161616','#131313','#181818','#111111','#151515','#121212','#171717'];
 
 function phCell(bg) {
-  return '<div class="ph" style="background:' + bg + '">'
-    + '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="0.8">'
-    + '<rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>'
-    + '</svg></div>';
+  return '<div class="ph" style="background:' + bg + '"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>';
 }
 
 function metaOverlay(photo, cls) {
@@ -705,189 +614,116 @@ function metaOverlay(photo, cls) {
   return '<div class="' + cls + '">' + loc + row + '</div>';
 }
 
-// Lightbox state
-var lbPhotos = [];
-var lbIndex  = 0;
+// Lightbox
+var lbPhotos = [], lbIndex = 0;
 
-function openLb(photos, idx) {
-  lbPhotos = photos;
-  lbIndex  = idx;
-  renderLb();
-  document.getElementById('lightbox').classList.add('open');
-}
+function openLb(photos, idx) { lbPhotos = photos; lbIndex = idx; renderLb(); document.getElementById('lightbox').classList.add('open'); }
 
 function renderLb() {
   var photo = lbPhotos[lbIndex];
   var img = document.getElementById('lb-img');
   var spinner = document.getElementById('lb-spinner');
-
-  // reset image, show spinner
   img.classList.remove('loaded');
   spinner.classList.add('active');
-
-  // set metadata immediately
   document.getElementById('lb-location').textContent = photo.location || '';
   document.getElementById('lb-year').textContent     = photo.year     || '';
   document.getElementById('lb-camera').textContent   = photo.camera   || '';
-  document.getElementById('lb-counter').textContent  = lbPhotos.length > 1 ? (lbIndex + 1) + ' / ' + lbPhotos.length : '';
+  document.getElementById('lb-counter').textContent  = lbPhotos.length > 1 ? (lbIndex+1) + ' / ' + lbPhotos.length : '';
   document.getElementById('lb-prev').classList.toggle('hidden', lbIndex === 0);
   document.getElementById('lb-next').classList.toggle('hidden', lbIndex === lbPhotos.length - 1);
   document.getElementById('lb-hint').style.display = lbPhotos.length > 1 ? 'block' : 'none';
-
-  // load image
-  var tempImg = new Image();
-  tempImg.onload = function() {
-    img.src = photo.src;
-    spinner.classList.remove('active');
-    img.classList.add('loaded');
-  };
-  tempImg.onerror = function() {
-    spinner.classList.remove('active');
-  };
-  tempImg.src = photo.src;
+  var t = new Image();
+  t.onload = function() { img.src = photo.src; spinner.classList.remove('active'); img.classList.add('loaded'); };
+  t.onerror = function() { spinner.classList.remove('active'); };
+  t.src = photo.src;
 }
 
-function lbNav(dir) {
-  var next = lbIndex + dir;
-  if (next >= 0 && next < lbPhotos.length) { lbIndex = next; renderLb(); }
-}
-
-function closeLb() { document.getElementById('lightbox').classList.remove('open'); }
+function lbNav(dir) { var n = lbIndex + dir; if (n >= 0 && n < lbPhotos.length) { lbIndex = n; renderLb(); } }
+function closeLb()  { document.getElementById('lightbox').classList.remove('open'); }
 
 document.addEventListener('keydown', function(e) {
   var lb = document.getElementById('lightbox');
   if (!lb.classList.contains('open')) return;
-  if (e.key === 'Escape')      closeLb();
-  if (e.key === 'ArrowRight')  lbNav(1);
-  if (e.key === 'ArrowLeft')   lbNav(-1);
+  if (e.key === 'Escape')     closeLb();
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'ArrowLeft')  lbNav(-1);
 });
 
-// Touch swipe support for mobile lightbox
 (function() {
-  var lb = document.getElementById('lightbox');
-  var touchStartX = 0;
-  var touchStartY = 0;
-
-  lb.addEventListener('touchstart', function(e) {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
+  var lb = document.getElementById('lightbox'), sx = 0, sy = 0;
+  lb.addEventListener('touchstart', function(e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
   lb.addEventListener('touchend', function(e) {
-    var dx = e.changedTouches[0].clientX - touchStartX;
-    var dy = e.changedTouches[0].clientY - touchStartY;
-    // only register horizontal swipes (ignore scrolls)
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
-      if (dx < 0) lbNav(1);  // swipe left = next
-      else        lbNav(-1); // swipe right = prev
-    }
-    // swipe down to close
+    var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) { if (dx < 0) lbNav(1); else lbNav(-1); }
     if (dy > 80 && Math.abs(dx) < 40) closeLb();
   }, { passive: true });
 }());
 
-// Build highlights
-var hlGrid  = document.getElementById('hl-grid');
-var hlCount = document.getElementById('hl-count');
-var hlItems = hlPhotos.length > 0 ? hlPhotos : (function(){ var a=[]; for(var i=0;i<8;i++) a.push({src:null}); return a; }());
-hlCount.textContent = hlPhotos.length + (hlPhotos.length !== 1 ? ' frames' : ' frame');
-
-var hlReal = hlPhotos.filter(function(p){ return p.src; });
-for (var i = 0; i < hlItems.length; i++) {
-  (function(photo, idx) {
+// Build grid helper
+function buildGrid(gridId, countId, photos, placeholders) {
+  var grid = document.getElementById(gridId);
+  var countEl = document.getElementById(countId);
+  if (!grid) return;
+  countEl.textContent = photos.length + (photos.length !== 1 ? ' photographs' : ' photograph');
+  var real = photos.filter(function(p) { return p.src; });
+  var items = photos.length > 0 ? photos : (function() { var a = []; for (var i = 0; i < placeholders; i++) a.push({src:null}); return a; }());
+  items.forEach(function(photo, idx) {
     var cell = document.createElement('div');
-    cell.className = 'hl-cell scroll-reveal';
-    var imgHtml = photo.src
-      ? '<img src="' + photo.src + '" alt="' + (photo.location||'') + '" loading="lazy">'
-      : phCell(bgs[idx % bgs.length]);
-    cell.innerHTML = imgHtml + metaOverlay(photo, 'hl-overlay');
-    if (photo.src) cell.onclick = function() { openLb(hlReal, hlReal.indexOf(photo)); };
-    hlGrid.appendChild(cell);
-  }(hlItems[i], i));
-}
-
-// Latest strip
-var allPhotos = [];
-hlPhotos.forEach(function(p){ if(p.src) allPhotos.push(p); });
-Object.keys(albums).forEach(function(key){ albums[key].forEach(function(p){ if(p.src) allPhotos.push(p); }); });
-
-var latestPhotos = allPhotos.filter(function(p){ return p.latest; }).slice(0, 5);
-if (latestPhotos.length > 0) {
-  document.getElementById('latest-strip').style.display = 'block';
-  var latestRow = document.getElementById('latest-row');
-  latestPhotos.forEach(function(photo) {
-    var cell = document.createElement('div');
-    cell.className = 'latest-cell';
-    cell.innerHTML = '<img src="' + photo.src + '" alt="' + (photo.location||'') + '" loading="lazy">'
-      + metaOverlay(photo, 'hl-overlay');
-    cell.onclick = function() { openLb(latestPhotos, latestPhotos.indexOf(photo)); };
-    latestRow.appendChild(cell);
+    cell.className = 'alb-cell scroll-reveal';
+    var imgHtml = photo.src ? '<img src="' + photo.src + '" alt="' + (photo.location||'') + '" loading="lazy">' : phCell(bgs[idx % bgs.length]);
+    cell.innerHTML = imgHtml + metaOverlay(photo, 'alb-overlay');
+    if (photo.src) (function(p) { cell.onclick = function() { openLb(real, real.indexOf(p)); }; }(photo));
+    grid.appendChild(cell);
   });
 }
 
-// Build albums
-var albumKeys = Object.keys(albums);
-for (var a = 0; a < albumKeys.length; a++) {
-  (function(key) {
-    var photos  = albums[key];
-    var grid    = document.getElementById('grid-' + key);
-    var countEl = document.getElementById('count-' + key);
-    countEl.textContent = photos.length + (photos.length !== 1 ? ' photographs' : ' photograph');
-    var realPhotos = photos.filter(function(p){ return p.src; });
-    var items = photos.length > 0 ? photos : (function(){ var a=[]; for(var i=0;i<6;i++) a.push({src:null}); return a; }());
-    items.forEach(function(photo, idx) {
-      var cell = document.createElement('div');
-      cell.className = 'alb-cell scroll-reveal';
-      var imgHtml = photo.src
-        ? '<img src="' + photo.src + '" alt="' + (photo.location||'') + '" loading="lazy">'
-        : phCell(bgs[idx % bgs.length]);
-      cell.innerHTML = imgHtml + metaOverlay(photo, 'alb-overlay');
-      if (photo.src) cell.onclick = function() { openLb(realPhotos, realPhotos.indexOf(photo)); };
-      grid.appendChild(cell);
-    });
-  }(albumKeys[a]));
+// Highlights
+var hlGrid  = document.getElementById('hl-grid');
+var hlCount = document.getElementById('hl-count');
+var hlReal  = hlPhotos.filter(function(p) { return p.src; });
+var hlItems = hlPhotos.length > 0 ? hlPhotos : (function() { var a = []; for (var i = 0; i < 8; i++) a.push({src:null}); return a; }());
+hlCount.textContent = hlPhotos.length + (hlPhotos.length !== 1 ? ' frames' : ' frame');
+hlItems.forEach(function(photo, i) {
+  var cell = document.createElement('div');
+  cell.className = 'hl-cell scroll-reveal';
+  var imgHtml = photo.src ? '<img src="' + photo.src + '" alt="' + (photo.location||'') + '" loading="lazy">' : phCell(bgs[i % bgs.length]);
+  cell.innerHTML = imgHtml + metaOverlay(photo, 'hl-overlay');
+  if (photo.src) (function(p) { cell.onclick = function() { openLb(hlReal, hlReal.indexOf(p)); }; }(photo));
+  hlGrid.appendChild(cell);
+});
+
+// Latest strip
+var allPhotos = [];
+hlPhotos.forEach(function(p) { if (p.src) allPhotos.push(p); });
+Object.keys(albums).forEach(function(k) { albums[k].forEach(function(p) { if (p.src) allPhotos.push(p); }); });
+Object.keys(trips).forEach(function(k)  { trips[k].forEach(function(p)  { if (p.src) allPhotos.push(p); }); });
+var latestPhotos = allPhotos.filter(function(p) { return p.latest; }).slice(0, 5);
+if (latestPhotos.length > 0) {
+  document.getElementById('latest-strip').style.display = 'block';
+  var lr = document.getElementById('latest-row');
+  latestPhotos.forEach(function(photo) {
+    var cell = document.createElement('div');
+    cell.className = 'latest-cell';
+    cell.innerHTML = '<img src="' + photo.src + '" alt="' + (photo.location||'') + '" loading="lazy">' + metaOverlay(photo, 'hl-overlay');
+    cell.onclick = function() { openLb(latestPhotos, latestPhotos.indexOf(photo)); };
+    lr.appendChild(cell);
+  });
 }
 
-// Build trips (same logic as albums)
-var tripKeys = Object.keys(trips);
-for (var t = 0; t < tripKeys.length; t++) {
-  (function(key) {
-    var photos  = trips[key];
-    var grid    = document.getElementById('grid-' + key);
-    var countEl = document.getElementById('count-' + key);
-    countEl.textContent = photos.length + (photos.length !== 1 ? ' photographs' : ' photograph');
-    var realPhotos = photos.filter(function(p){ return p.src; });
-    var items = photos.length > 0 ? photos : (function(){ var a=[]; for(var i=0;i<6;i++) a.push({src:null}); return a; }());
-    items.forEach(function(photo, idx) {
-      var cell = document.createElement('div');
-      cell.className = 'alb-cell scroll-reveal';
-      var imgHtml = photo.src
-        ? '<img src="' + photo.src + '" alt="' + (photo.location||'') + '" loading="lazy">'
-        : phCell(bgs[idx % bgs.length]);
-      cell.innerHTML = imgHtml + metaOverlay(photo, 'alb-overlay');
-      if (photo.src) cell.onclick = function() { openLb(realPhotos, realPhotos.indexOf(photo)); };
-      grid.appendChild(cell);
-    });
-  }(tripKeys[t]));
-}
+// Albums + trips
+Object.keys(albums).forEach(function(k) { buildGrid('grid-' + k, 'count-' + k, albums[k], 6); });
+Object.keys(trips).forEach(function(k)  { buildGrid('grid-' + k, 'count-' + k, trips[k],  6); });
 
-// Build story list
+// Stories
 var storyList = document.getElementById('story-list');
 if (stories.length === 0) {
-  storyList.innerHTML = '<div style="padding:80px 56px;font-family:IBM Plex Mono,monospace;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);">No stories yet — add your first one in the HTML.</div>';
+  storyList.innerHTML = '<div style="padding:80px 56px;font-family:\'IBM Plex Mono\',monospace;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)">No stories yet.</div>';
 } else {
   stories.forEach(function(story, si) {
     var card = document.createElement('div');
     card.className = 'story-card';
-    var thumb = story.cover
-      ? '<img src="' + story.cover + '" alt="' + story.title + '">'
-      : '<div style="width:100%;height:100%;background:#141414;display:flex;align-items:center;justify-content:center;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>';
-    card.innerHTML = '<div class="story-thumb">' + thumb + '</div>'
-      + '<div class="story-info">'
-      + '<div class="story-title">' + story.title + '</div>'
-      + '<div class="story-desc">' + (story.desc || '') + '</div>'
-      + '<div class="story-meta"><span>' + (story.location||'') + '</span><span>' + (story.year||'') + '</span></div>'
-      + '</div>';
+    var thumb = story.cover ? '<img src="' + story.cover + '" alt="">' : '<div style="width:100%;height:100%;background:#141414"></div>';
+    card.innerHTML = '<div class="story-thumb">' + thumb + '</div><div class="story-info"><div class="story-title">' + story.title + '</div><div class="story-desc">' + (story.desc||'') + '</div><div class="story-meta"><span>' + (story.location||'') + '</span><span>' + (story.year||'') + '</span></div></div>';
     card.onclick = function() { openStory(si); };
     storyList.appendChild(card);
   });
@@ -901,27 +737,13 @@ function openStory(si) {
   document.getElementById('reader-title').textContent = story.title;
   var body = document.getElementById('reader-body');
   body.innerHTML = '';
-
   story.blocks.forEach(function(block) {
     var el;
-    if (block.type === 'image') {
-      el = document.createElement('div');
-      el.className = 's-img scroll-reveal' + (block.full ? ' full' : '');
-      el.innerHTML = '<img src="' + block.src + '" alt="' + (block.location||'') + '" loading="lazy">';
-      body.appendChild(el);
-    } else if (block.type === 'text') {
-      el = document.createElement('p');
-      el.className = 's-text scroll-reveal';
-      el.textContent = block.content;
-      body.appendChild(el);
-    } else if (block.type === 'location') {
-      el = document.createElement('div');
-      el.className = 's-location scroll-reveal';
-      el.textContent = block.content;
-      body.appendChild(el);
-    }
+    if (block.type === 'image') { el = document.createElement('div'); el.className = 's-img scroll-reveal' + (block.full ? ' full' : ''); el.innerHTML = '<img src="' + block.src + '" alt="" loading="lazy">'; }
+    else if (block.type === 'text') { el = document.createElement('p'); el.className = 's-text scroll-reveal'; el.textContent = block.content; }
+    else if (block.type === 'location') { el = document.createElement('div'); el.className = 's-location scroll-reveal'; el.textContent = block.content; }
+    if (el) body.appendChild(el);
   });
-
   document.getElementById('main').scrollTo(0, 0);
   setTimeout(initScrollReveal, 100);
 }
@@ -932,24 +754,15 @@ function closeStory() {
   document.getElementById('reader-body').innerHTML = '';
 }
 
-// Scroll reveal observer
+// Scroll reveal
 function initScrollReveal() {
   var els = document.querySelectorAll('.scroll-reveal:not(.visible)');
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(function(el){ el.classList.add('visible'); });
-    return;
-  }
+  if (!('IntersectionObserver' in window)) { els.forEach(function(el) { el.classList.add('visible'); }); return; }
   var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        obs.unobserve(entry.target);
-      }
-    });
+    entries.forEach(function(entry) { if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); } });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  els.forEach(function(el){ obs.observe(el); });
+  els.forEach(function(el) { obs.observe(el); });
 }
-
 initScrollReveal();
 
 // Nav
@@ -958,12 +771,9 @@ function switchPanel(panelKey) {
   for (var i = 0; i < buttons.length; i++) {
     buttons[i].classList.toggle('active', buttons[i].getAttribute('data-panel') === panelKey);
   }
-
-  // crossfade: fade out current, then swap
   var current = document.querySelector('.panel.active');
   var next = document.getElementById('panel-' + panelKey);
   if (!next) return;
-
   if (current && current !== next) {
     current.classList.add('fade-out');
     setTimeout(function() {
@@ -971,34 +781,30 @@ function switchPanel(panelKey) {
       next.classList.add('active');
       document.getElementById('main').scrollTo(0, 0);
       setTimeout(initScrollReveal, 100);
+      if (panelKey === 'map') setTimeout(loadMap, 250);
     }, 180);
   } else if (!current) {
     next.classList.add('active');
     document.getElementById('main').scrollTo(0, 0);
-    setTimeout(initScrollReveal, 100);
+    if (panelKey === 'map') setTimeout(loadMap, 250);
   }
-
-  // remember last tab
   try { localStorage.setItem('jf_panel', panelKey); } catch(e) {}
 }
 
-function attachNav(navId) {
-  var nav = document.getElementById(navId);
+function attachNav(id) {
+  var nav = document.getElementById(id);
   if (!nav) return;
   nav.addEventListener('click', function(e) {
     var btn = e.target.closest('button[data-panel]');
     if (!btn) return;
-    // reset story reader if leaving stories panel
     closeStory();
     switchPanel(btn.getAttribute('data-panel'));
     closeDrawerAll();
   });
 }
-
 attachNav('nav-desktop');
 attachNav('nav-mobile');
 
-// Restore last visited tab
 try {
   var saved = localStorage.getItem('jf_panel');
   if (saved && document.getElementById('panel-' + saved)) {
@@ -1007,10 +813,140 @@ try {
   }
 } catch(e) {}
 
-// Drawer
 function toggleDrawer()   { document.getElementById('drawer').classList.toggle('open'); }
 function closeDrawerAll() { document.getElementById('drawer').classList.remove('open'); }
 function closeDrawer(e)   { if (e.target === document.getElementById('drawer')) closeDrawerAll(); }
+
+// ============================================================
+//  MAP
+// ============================================================
+var mapObj = null, mapSorted = [], mapMarkers = [], mapIdx = -1;
+var autoTimer = null, isPlaying = false, flightLines = [];
+
+function loadMap() {
+  if (mapObj) { mapObj.invalidateSize(); return; }
+  if (window.L) { initMap(); return; }
+  var s = document.createElement('script');
+  s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  s.onload = initMap;
+  s.onerror = function() {
+    document.getElementById('the-map').innerHTML = '<div style="height:100%;display:flex;align-items:center;justify-content:center;font-family:\'IBM Plex Mono\',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:#444">Requires internet connection</div>';
+  };
+  document.head.appendChild(s);
+}
+
+function initMap() {
+  mapObj = L.map('the-map', { center: [25, 15], zoom: 2, zoomControl: true, scrollWheelZoom: true });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap', maxZoom: 18 }).addTo(mapObj);
+
+  mapSorted = tripsData.slice().sort(function(a, b) { return (a.year * 12 + a.month) - (b.year * 12 + b.month); });
+
+  var tl = document.getElementById('map-tl');
+  var prog = document.getElementById('tl-progress');
+  tl.innerHTML = '';
+  tl.appendChild(prog);
+
+  mapSorted.forEach(function(trip, i) {
+    // marker
+    var wrap = document.createElement('div');
+    wrap.className = 'map-dot-wrap';
+    wrap.innerHTML = '<div class="map-pulse"></div><div class="map-dot"></div>';
+    var marker = L.marker([trip.lat, trip.lng], {
+      icon: L.divIcon({ className: '', html: wrap, iconSize: [20,20], iconAnchor: [10,10] })
+    }).addTo(mapObj);
+    (function(idx) { marker.on('click', function() { focusTrip(idx, true); }); }(i));
+    mapMarkers.push({ marker: marker, wrap: wrap, trip: trip });
+
+    // timeline
+    if (i > 0) { var sep = document.createElement('div'); sep.className = 'tl-sep'; tl.appendChild(sep); }
+    var item = document.createElement('div');
+    item.className = 'tl-item';
+    item.setAttribute('data-i', i);
+    item.innerHTML = '<div class="tl-dot"></div><div class="tl-city">' + trip.city + '</div><div class="tl-date">' + MONTHS[trip.month-1] + ' \'' + String(trip.year).slice(2) + '</div>';
+    (function(idx) { item.onclick = function() { focusTrip(idx, true); }; }(i));
+    tl.appendChild(item);
+  });
+
+  // flight paths
+  for (var i = 0; i < mapSorted.length - 1; i++) {
+    var a = mapSorted[i], b = mapSorted[i+1];
+    flightLines.push(L.polyline([[a.lat,a.lng],[b.lat,b.lng]], { color: 'rgba(200,255,0,0.12)', weight: 1, dashArray: '4 8' }).addTo(mapObj));
+  }
+
+  document.getElementById('map-counter').textContent = mapSorted.length + ' places';
+  focusTrip(0, false);
+}
+
+function focusTrip(i, fly) {
+  if (i < 0 || i >= mapSorted.length) return;
+  var trip = mapSorted[i];
+  mapIdx = i;
+
+  mapMarkers.forEach(function(m, idx) {
+    m.wrap.classList.toggle('active',  idx === i);
+    m.wrap.classList.toggle('visited', idx < i);
+  });
+
+  document.querySelectorAll('.tl-item').forEach(function(el, idx) {
+    el.classList.toggle('active',  idx === i);
+    el.classList.toggle('visited', idx < i);
+  });
+
+  document.getElementById('tl-progress').style.width =
+    (mapSorted.length > 1 ? (i / (mapSorted.length - 1)) * 100 : 100) + '%';
+
+  var active = document.querySelector('.tl-item[data-i="' + i + '"]');
+  if (active) {
+    var tl = document.getElementById('map-tl');
+    tl.scrollTo({ left: active.offsetLeft - tl.offsetWidth / 2 + active.offsetWidth / 2, behavior: 'smooth' });
+  }
+
+  if (fly) mapObj.flyTo([trip.lat, trip.lng], 5, { duration: 1.4 });
+  else mapObj.setView([trip.lat, trip.lng], 4);
+
+  setTimeout(function() {
+    if (!mapMarkers[i]) return;
+    var n = trip.photos ? trip.photos.length : 0;
+    var ph = '';
+    if (n > 0) {
+      var cls = n===1?'n1':n===2?'n2':'n3';
+      ph = '<div class="pop-photos ' + cls + '">';
+      trip.photos.forEach(function(src, pi) {
+        ph += '<img src="' + src + '" class="' + (cls==='n3'&&pi===0?'pm':cls==='n3'?'ps':'') + '">';
+      });
+      ph += '</div>';
+    } else {
+      ph = '<div class="pop-no-photo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="0.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>';
+    }
+    var btn = trip.id ? '<button class="pop-btn" onclick="openFromMap(\'' + trip.id + '\')">View Trip &#8594;</button>' : '';
+    mapMarkers[i].marker
+      .bindPopup('<div class="map-popup">' + ph + '<div class="pop-info"><div class="pop-city">' + trip.city + '</div><div class="pop-country">' + trip.country + '</div><div class="pop-date">' + MONTHS[trip.month-1] + ' ' + trip.year + '</div>' + btn + '</div></div>', { maxWidth:300, minWidth:220, autoPan:true })
+      .openPopup();
+  }, fly ? 1300 : 120);
+}
+
+function mapNav(dir) { focusTrip(mapIdx + dir, true); }
+
+function toggleAutoPlay() {
+  isPlaying = !isPlaying;
+  var btn = document.getElementById('btn-play');
+  btn.innerHTML = isPlaying ? '&#9632; Stop' : '&#9654; Auto';
+  btn.classList.toggle('playing', isPlaying);
+  if (isPlaying) autoTimer = setInterval(function() { focusTrip((mapIdx + 1) % mapSorted.length, true); }, 4000);
+  else clearInterval(autoTimer);
+}
+
+function openFromMap(tripId) {
+  switchPanel('alb-' + tripId);
+  var btm = document.getElementById('btm-' + tripId);
+  if (btm) btm.style.display = 'block';
+}
+
+function goBackToMap(tripId) {
+  var btm = document.getElementById('btm-' + tripId);
+  if (btm) btm.style.display = 'none';
+  switchPanel('map');
+}
 </script>
 </body>
 </html>
